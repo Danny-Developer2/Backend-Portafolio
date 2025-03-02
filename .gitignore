@@ -8,7 +8,7 @@
 *.zip
 
 # Ignorar carpetas específicas
-Backend-Examples/Examen-Final/
+Backend-Examples/
 StudentAssets/
 
 # Ignorar archivos de base de datos (ejemplo para SQLite, MySQL, SQL Server)
