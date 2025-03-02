@@ -1,0 +1,24 @@
+# Ignorar archivos del sistema macOS
+.DS_Store
+
+# Ignorar archivos de configuración de JetBrains (IntelliJ, WebStorm, PyCharm, etc.)
+.idea/
+
+# Ignorar archivos ZIP
+*.zip
+
+# Ignorar carpetas específicas
+Backend-Examples/Examen-Final/
+Backend/
+StudentAssets/
+
+# Ignorar archivos de base de datos (ejemplo para SQLite, MySQL, SQL Server)
+*.db
+*.sqlite
+*.sql
+*.mdf
+*.ldf
+
+# Ignorar archivos de configuración sensibles
+appsettings.json
+appsettings.Development.json
