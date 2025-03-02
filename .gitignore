@@ -10,7 +10,7 @@
 # Ignorar carpetas específicas
 Backend-Examples/Examen-Final/
 StudentAssets/
-Backend/API/appsettings.json
+
 # Ignorar archivos de base de datos (ejemplo para SQLite, MySQL, SQL Server)
 *.db
 *.sqlite
