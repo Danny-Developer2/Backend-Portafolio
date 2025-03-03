@@ -7,6 +7,7 @@ using API.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using API.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +40,9 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin","User"));
 });
+
+
+
 // Configurar la conexión a la base de datos
 
 builder.Services.AddDbContext<DataContext>(options =>
@@ -71,6 +75,8 @@ builder.Services.AddControllers();  // Aquí se agrega AddControllers
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<UserRepository, UserRepository>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 

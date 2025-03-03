@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using API.Entities;
-using API.Data;
 using API.DTO;
+using API.Interfaces;
 
 namespace API.Data
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
 
@@ -38,7 +38,11 @@ namespace API.Data
         // Crear un nuevo usuario
         public async Task<AppUser> AddUser(UserDTO userDTO)
         {
-            // Verificar si el correo ya existe
+            if (string.IsNullOrWhiteSpace(userDTO.PasswordHash))
+            {
+                throw new InvalidOperationException("La contraseña es obligatoria.");
+            }
+
             if (await _context.Users.AnyAsync(u => u.Email == userDTO.Email))
             {
                 throw new InvalidOperationException("El correo electrónico ya está registrado.");
@@ -88,18 +92,17 @@ namespace API.Data
         }
 
         // Eliminar usuario
-        public async Task DeleteUser(int id)
+        public async Task<bool> DeleteUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
-            if (user != null)
+            if (user == null)
             {
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
+                return false; // ✅ Mejor que lanzar una excepción
             }
-            else
-            {
-                throw new KeyNotFoundException("Usuario no encontrado.");
-            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }
