@@ -14,6 +14,7 @@ namespace API.Controllers
     public class SkillsController : ControllerBase
     {
         private readonly SkillRepository _skillRepository;
+        
 
         public SkillsController(SkillRepository skillRepository)
         {

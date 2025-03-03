@@ -7,47 +7,40 @@ using System.Collections.Generic;
 using API.Errors;
 using API.DTOs;
 using Microsoft.EntityFrameworkCore;
-using SQLitePCL;  // Asegúrate de incluir el espacio de nombres para ApiException
+using SQLitePCL;
+using API.Interfaces;  // Asegúrate de incluir el espacio de nombres para ApiException
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+   
+
     public class UsersController : ControllerBase
     {
-        private readonly UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
-         private readonly DataContext _context;
-
-        public UsersController(UserRepository userRepository, DataContext context)
+        public UsersController(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-
-            _context = context;
         }
 
-        // Obtener todos los usuarios
-       
         // Obtener usuario por ID
-        [HttpGet("{id:int}")]
+        [HttpGet("by-id")]
         public async Task<ActionResult<AppUser>> GetUserById(int id)
         {
             try
             {
                 var user = await _userRepository.GetUserById(id);
-                if (user == null)
-                {
-                    throw new ApiException(404, "Usuario no encontrado"); // Lanza ApiException si el usuario no existe
-                }
                 return Ok(user);
             }
             catch (KeyNotFoundException e)
             {
-                throw new ApiException(404, e.Message); // Lanza ApiException si el usuario no se encuentra
+                return NotFound(new { message = e.Message });
             }
             catch (Exception ex)
             {
-                throw new ApiException(500, $"Error al obtener el usuario: {ex.Message}"); // Lanza ApiException en caso de error inesperado
+                return StatusCode(500, new { message = $"Error al obtener el usuario: {ex.Message}" });
             }
         }
 
@@ -55,85 +48,32 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<AppUser>> CreateUser(UserDTO userDTO)
         {
-            try
-            {
-                if (userDTO == null)
-                {
-                    throw new ApiException(400, "Los datos del usuario son inválidos."); // Lanza ApiException si los datos son inválidos
-                }
+            if (userDTO is null) return BadRequest("Los datos del usuario son inválidos.");
 
-                var user = await _userRepository.AddUser(userDTO);
-                return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
-            }
-            catch (InvalidOperationException e)
-            {
-                throw new ApiException(400, e.Message); // Lanza ApiException si la operación es inválida
-            }
-            catch (Exception ex)
-            {
-                throw new ApiException(500, $"Error al crear el usuario: {ex.Message}"); // Lanza ApiException en caso de error inesperado
-            }
+            var user = await _userRepository.AddUser(userDTO);
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
         }
 
         // Actualizar usuario
-        [HttpPut("{id:int}")]
+        [HttpPut("by-id")]
         public async Task<IActionResult> UpdateUser(int id, UserDTO userDTO)
         {
-            if (id != userDTO.Id)
-            {
-                throw new ApiException(400, "Los IDs no coinciden"); // Lanza ApiException si los IDs no coinciden
-            }
+            if (id != userDTO.Id) return BadRequest("Los IDs no coinciden");
 
-            try
-            {
-                var updatedUser = await _userRepository.UpdateUser(id, userDTO);
-                if (updatedUser == null)
-                {
-                    throw new ApiException(404, "Usuario no encontrado"); // Lanza ApiException si no se encuentra el usuario
-                }
-                return Ok(updatedUser);
-            }
-            catch (KeyNotFoundException e)
-            {
-                throw new ApiException(404, e.Message); // Lanza ApiException si el usuario no se encuentra
-            }
-            catch (InvalidOperationException e)
-            {
-                throw new ApiException(400, e.Message); // Lanza ApiException si la operación es inválida
-            }
-            catch (Exception ex)
-            {
-                throw new ApiException(500, $"Error al actualizar el usuario: {ex.Message}"); // Lanza ApiException en caso de error inesperado
-            }
+            var updatedUser = await _userRepository.UpdateUser(id, userDTO);
+            return updatedUser is null ? NotFound("Usuario no encontrado") : Ok(updatedUser);
         }
 
         // Eliminar usuario
-        [HttpDelete("{id:int}")]
+        [HttpDelete("by-id")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            try
+            var result = await _userRepository.DeleteUser(id);
+            if (!result)
             {
-                var user = await _userRepository.GetUserById(id);
-                if (user == null)
-                {
-                    throw new ApiException(404, "Usuario no encontrado"); // Lanza ApiException si no se encuentra el usuario
-                }
-
-                await _userRepository.DeleteUser(id);
-                return NoContent(); // 204 No Content
+                return NotFound(new { message = "Usuario no encontrado" });
             }
-            catch (KeyNotFoundException e)
-            {
-                throw new ApiException(404, e.Message); // Lanza ApiException si el usuario no se encuentra
-            }
-            catch (ApiException ex)
-            {
-                return StatusCode(ex.StatusCode, ex.Message); // Manejo de errores controlados
-            }
-            catch (Exception ex)
-            {
-                throw new ApiException(500, $"Error al eliminar el usuario: {ex.Message}"); // Lanza ApiException en caso de error inesperado
-            }
+            return NoContent(); // ✅ Código 204 si se eliminó correctamente
         }
     }
 }

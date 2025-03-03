@@ -155,3 +155,4 @@
 /Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
 /Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/juancazas/Desktop/Curso .Net/Backend/API/obj/Debug/net9.0/API.sourcelink.json
