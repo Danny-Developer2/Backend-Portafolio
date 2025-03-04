@@ -156,3 +156,14 @@
 /Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
 /Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
 /Users/juancazas/Desktop/Curso .Net/Backend/API/obj/Debug/net9.0/API.sourcelink.json
+/Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/Castle.Core.dll
+/Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/Moq.dll
+/Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/xunit.abstractions.dll
+/Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/xunit.assert.dll
+/Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/xunit.core.dll
+/Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/xunit.execution.dotnet.dll
+/Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/runtimes/win/lib/net6.0/System.Diagnostics.EventLog.Messages.dll
+/Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+/Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/Newtonsoft.Json.dll
+/Users/juancazas/Desktop/Curso .Net/Backend/API/bin/Debug/net9.0/Newtonsoft.Json.Bson.dll

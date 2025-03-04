@@ -1,0 +1,8 @@
+/Users/juancazas/Desktop/Curso .Net/Backend/API/obj/Debug/net7.0/API.csproj.AssemblyReference.cache
+/Users/juancazas/Desktop/Curso .Net/Backend/API/obj/Debug/net7.0/API.GeneratedMSBuildEditorConfig.editorconfig
+/Users/juancazas/Desktop/Curso .Net/Backend/API/obj/Debug/net7.0/API.AssemblyInfoInputs.cache
+/Users/juancazas/Desktop/Curso .Net/Backend/API/obj/Debug/net7.0/API.AssemblyInfo.cs
+/Users/juancazas/Desktop/Curso .Net/Backend/API/obj/Debug/net7.0/API.csproj.CoreCompileInputs.cache
+/Users/juancazas/Desktop/Curso .Net/Backend/API/obj/Debug/net7.0/API.MvcApplicationPartsAssemblyInfo.cs
+/Users/juancazas/Desktop/Curso .Net/Backend/API/obj/Debug/net7.0/API.MvcApplicationPartsAssemblyInfo.cache
+/Users/juancazas/Desktop/Curso .Net/Backend/API/obj/Debug/net7.0/API.sourcelink.json
