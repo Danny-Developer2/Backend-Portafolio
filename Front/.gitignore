@@ -41,32 +41,13 @@ testem.log
 .DS_Store
 Thumbs.db
 
+
+# SSL folder
+/ssl
+
+# Environment files
+/.env
+
 # Package files
-package-lock.json
-package.json
-
-# Node.js
-node_modules/
-
-# Angular
-dist/
-out-tsc/
-
-# System Files
-.DS_Store
-Thumbs.db
-
-# IDE or editor folders
-.vscode/
-.idea/
-
-# Dependency directories
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Optional npm cache directory
-.npm/
-
-# Temporary files
-.tmp/
+/package.json
+/package-lock.json
