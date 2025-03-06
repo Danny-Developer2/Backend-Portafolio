@@ -51,6 +51,17 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policy =>
+        {
+            policy.WithOrigins("https://192.168.100.12:4200") // Cambia esto según tu frontend
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials(); // Si usas autenticación con cookies o tokens
+        });
+});
 
 builder.Services.AddScoped<ExperienceRepository, ExperienceRepository>();
 
@@ -82,6 +93,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 var app = builder.Build();
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseExceptionMiddleware(); 
 
