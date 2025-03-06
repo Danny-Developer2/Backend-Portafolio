@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  usuarioLogeado: boolean = false;
 
 
   email: string = '';
@@ -25,6 +26,7 @@ export class LoginComponent {
       next: (response) => {
         // Si el login es exitoso, almacenas el token y rediriges
         localStorage.setItem('token', response.token);  // Asumiendo que el backend retorna un token
+        sessionStorage.setItem('token', response.token);
         console.log('Login exitoso', response);
 
         // Redirige a la página principal o dashboard

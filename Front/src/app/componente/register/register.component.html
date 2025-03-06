@@ -1,1 +1,54 @@
-<p>register works!</p>
+<div class="container mt-4">
+    <h2>Registrar Proyecto</h2>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Nombre del proyecto -->
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre del Proyecto</label>
+        <input type="text" id="name" class="form-control" formControlName="name" required />
+      </div>
+  
+      <!-- Descripción -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Descripción</label>
+        <textarea id="description" class="form-control" formControlName="description" required></textarea>
+      </div>
+  
+      <!-- Tecnología utilizada -->
+      <div class="mb-3">
+        <label for="technology" class="form-label">Tecnología</label>
+        <input type="text" id="technology" class="form-control" formControlName="technology" required />
+      </div>
+  
+      <!-- URL del Proyecto -->
+      <div class="mb-3">
+        <label for="url" class="form-label">URL del Proyecto</label>
+        <input type="url" id="url" class="form-control" formControlName="url" required />
+      </div>
+  
+      <!-- Imagen del Proyecto -->
+      <div class="mb-3">
+        <label for="imgUrl" class="form-label">URL de la Imagen</label>
+        <input type="url" id="imgUrl" class="form-control" formControlName="imgUrl" required />
+      </div>
+  
+      <!-- IDs (ejemplo con input simple, puedes mejorarlo con select múltiple) -->
+      <div class="mb-3">
+        <label for="skillIds" class="form-label">Habilidades (IDs separados por coma)</label>
+        <input type="text" id="skillIds" class="form-control" formControlName="skillIds" />
+      </div>
+  
+      <div class="mb-3">
+        <label for="experienceIds" class="form-label">Experiencia (IDs separados por coma)</label>
+        <input type="text" id="experienceIds" class="form-control" formControlName="experienceIds" />
+      </div>
+  
+      <div class="mb-3">
+        <label for="userIds" class="form-label">Usuarios (IDs separados por coma)</label>
+        <input type="text" id="userIds" class="form-control" formControlName="userIds" />
+      </div>
+  
+      <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Registrar</button>
+    </form>
+  </div>
+  
