@@ -49,7 +49,10 @@
         <label for="experienceIds" class="form-label">Experiencias:</label>
         <select name="experienceIds" class="form-control" formControlName="experienceIds">
           <option value="">Seleccione las Experiencias:</option>
-          <option [value]="0">Prueba</option>
+          @for(experience of experiences; track experience.id){
+            <option [value]="experience.id">{{ experience.companyName }}</option>
+          }
+
         </select>
 
       </div>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators  } from '@angular/forms';
 import { RegisterProjectsService } from '../../services/registerProjets.service';
 import { GetSkillsService, Skills } from '../../services/get-skills.service';
+import {Experiences, GetExperiencesService} from '../../services/get-experiences.service';
 
 
 @Component({
@@ -13,12 +14,12 @@ export class RegisterProjectComponent {
 
   token: string | null=null;
   skills: Skills[] = [];
-  experiences: string[] = [];
+  experiences: Experiences[] = [];
 
 
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private registerService: RegisterProjectsService, private getSkillsService:GetSkillsService) {
+  constructor(private fb: FormBuilder, private registerService: RegisterProjectsService, private getSkillsService:GetSkillsService, private getExperiencesService:GetExperiencesService) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -33,6 +34,7 @@ export class RegisterProjectComponent {
 
   ngOnInit(): void {
     this.getSkills(); // Llamar al método para obtener las habilidades al cargar el componente
+    this.getExperiences(); // Llamar al método para obtener las experiencias al cargar el componente
   }
   onSubmit() {
 
@@ -73,6 +75,20 @@ export class RegisterProjectComponent {
       (data) => {
         this.skills = data;
         console.log('Habilidades obtenidas:', this.skills);
+      },
+      (error) => {
+        console.error('Error al obtener las habilidades:', error);
+      }
+
+  
+    );
+  }
+
+  getExperiences(): any{
+    this.getExperiencesService.getExperiences().subscribe(
+      (data) => {
+        this.experiences = data;
+        console.log('Experiencias obtenidas:', this.experiences);
       },
       (error) => {
         console.error('Error al obtener las habilidades:', error);

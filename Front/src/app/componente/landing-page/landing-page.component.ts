@@ -45,7 +45,7 @@ export class LandingPageComponent implements OnInit  {
         const decodedToken: any = jwtDecode(this.token);
         this.role = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
-        console.log('Rol del usuario:', this.role);
+        console.log('Rol del usuarios:', this.role);
       }
       
       console.log('Token:', this.token);

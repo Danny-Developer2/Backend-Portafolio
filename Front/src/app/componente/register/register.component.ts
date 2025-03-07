@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators,AbstractControl } from '@angular/forms';
 import { RegisterService } from '../../services/register.service';
 import { Router } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
@@ -19,17 +19,19 @@ export class RegisterComponent {
       name: ['', [Validators.required]],
       email: ['', Validators.required],
       passwordHash: ['', [Validators.required, Validators.minLength(8)]],
-      role: ['', Validators.required]
+      // role: ['', Validators.required]
     });
   }
 
+ 
 
   onSbmit(){
     if(this.registerUserFrom.valid){
       const formData = {
         id: Math.floor(Math.random() * 1000),
        ...this.registerUserFrom.value,
-       role: parseInt(this.registerUserFrom.value.role)
+      //  Esto del rol no se hace asi desde el backend tienes que crear el usuario de forma automarica como user 0 sin necesidad del fornt
+       role: 0
       }
       console.log(formData);
       this.registerUser.registerUser(formData).subscribe(

@@ -27,7 +27,7 @@ namespace API.Controllers
         }
 
         // Obtener todas las experiencias
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppExperience>>> GetExperiences()
         {
