@@ -1,54 +1,62 @@
-<div class="container mt-4">
-    <h2>Registrar Proyecto</h2>
+<div class="container" style="display: grid; grid-template-rows: auto 1fr auto; min-height: 100dvh;">
+    <form [formGroup]="registerUserFrom" (ngSubmit)="onSbmit()" class="container mt-4 p-4 border rounded shadow-sm bg-light">
+        <h2 class="text-center mb-4">Registro de Usuario</h2>
+      
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre:</label>
+          <input id="name" type="text" class="form-control" formControlName="name" />
+          @if(registerUserFrom.get('name')?.invalid && registerUserFrom.get('name')?.touched){
+            <div class="text-danger small" >
+                @if(registerUserFrom.get('name')?.errors?.['required']){ <small >El nombre es obligatorio.</small>}
+              </div>
+            
+          }
+        </div>
+         
+      
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo Electrónico:</label>
+          <input id="email" type="email" class="form-control" formControlName="email" />
+          <!-- @if(registerUserFrom.get('email')?.errors?.['required']){<small >Debe ser un correo válido.</small>} -->
+          @if(registerUserFrom.get('email')?.invalid && registerUserFrom.get('email')?.touched){
+            <div class="text-danger small">
+                <small>El correo electrónico es obligatorio.</small>
+              </div>
+          }
+         
+        </div>
+      
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña:</label>
+          <input id="password" type="password" class="form-control" formControlName="passwordHash" />
+          @if(registerUserFrom.get('passwordHash')?.invalid && registerUserFrom.get('passwordHash')?.touched){
+            <div class="text-danger small">
+                @if(registerUserFrom.get('passwordHash')?.errors?.['required']){<small >La contraseña es obligatoria.</small>}
+                @if(registerUserFrom.get('passwordHash')?.errors?.['minlength']){<small >Debe tener al menos 8 caracteres.</small>}
+              </div>
+          }
+          
+        </div>
+      
+        <div class="mb-3">
+          <label for="role" class="form-label">Rol:</label>
+          <input id="role" type="text" class="form-control" formControlName="role" placeholder="Ejemplo: 1,2,3" />
+         @if(registerUserFrom.get('role')?.invalid && registerUserFrom.get('role')?.touched){
+            <div class="text-danger small" >
+                <small>El rol es obligatorio.</small>
+              </div>
     
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <!-- Nombre del proyecto -->
-      <div class="mb-3">
-        <label for="name" class="form-label">Nombre del Proyecto</label>
-        <input type="text" id="name" class="form-control" formControlName="name" required />
-      </div>
-  
-      <!-- Descripción -->
-      <div class="mb-3">
-        <label for="description" class="form-label">Descripción</label>
-        <textarea id="description" class="form-control" formControlName="description" required></textarea>
-      </div>
-  
-      <!-- Tecnología utilizada -->
-      <div class="mb-3">
-        <label for="technology" class="form-label">Tecnología</label>
-        <input type="text" id="technology" class="form-control" formControlName="technology" required />
-      </div>
-  
-      <!-- URL del Proyecto -->
-      <div class="mb-3">
-        <label for="url" class="form-label">URL del Proyecto</label>
-        <input type="url" id="url" class="form-control" formControlName="url" required />
-      </div>
-  
-      <!-- Imagen del Proyecto -->
-      <div class="mb-3">
-        <label for="imgUrl" class="form-label">URL de la Imagen</label>
-        <input type="url" id="imgUrl" class="form-control" formControlName="imgUrl" required />
-      </div>
-  
-      <!-- IDs (ejemplo con input simple, puedes mejorarlo con select múltiple) -->
-      <div class="mb-3">
-        <label for="skillIds" class="form-label">Habilidades (IDs separados por coma)</label>
-        <input type="text" id="skillIds" class="form-control" formControlName="skillIds" />
-      </div>
-  
-      <div class="mb-3">
-        <label for="experienceIds" class="form-label">Experiencia (IDs separados por coma)</label>
-        <input type="text" id="experienceIds" class="form-control" formControlName="experienceIds" />
-      </div>
-  
-      <div class="mb-3">
-        <label for="userIds" class="form-label">Usuarios (IDs separados por coma)</label>
-        <input type="text" id="userIds" class="form-control" formControlName="userIds" />
-      </div>
-  
-      <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Registrar</button>
-    </form>
-  </div>
+         } 
+          
+        </div>
+       <h1>{{registerUserFrom.invalid}}</h1>
+        <button type="submit" class="btn btn-primary w-100" [disabled]="registerUserFrom.invalid">
+          Registrar
+        </button>
+      </form>
+    
+</div>
+
+
+  <app-footer></app-footer>
   

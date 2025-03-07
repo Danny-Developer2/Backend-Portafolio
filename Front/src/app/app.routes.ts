@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LandingPageComponent } from './componente/landing-page/landing-page.component';
-import { RegisterComponent } from './componente/register/register.component';
+import { RegisterProjectComponent } from './componente/registerProjects/registerProject.component';
 import { LoginComponent } from './componente/login/login.component';
+import { RegisterComponent } from './componente/register/register.component';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },
-    { path: 'register', component: RegisterComponent }, 
+    { path: 'register-projects', component: RegisterProjectComponent }, 
+    { path: 'register', component: RegisterComponent },  // Ruta para registrar un nuevo proyecto
     { path: 'login', component: LoginComponent },
     { path: '**', redirectTo: '' }  // Si la ruta no existe, redirige al inicio
 ];

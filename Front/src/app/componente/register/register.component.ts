@@ -1,58 +1,55 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators  } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RegisterService } from '../../services/register.service';
+import { Router } from '@angular/router';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,FooterComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
 
+  registerUserFrom: FormGroup; 
 
-  registerForm: FormGroup;
-
-  constructor(private fb: FormBuilder, private registerService: RegisterService) {
-    this.registerForm = this.fb.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      technology: ['', Validators.required],
-      url: ['', [Validators.required, Validators.pattern('https?://.+')]],
-      imgUrl: ['', [Validators.required, Validators.pattern('https?://.+')]],
-      skillIds: [''],
-      experienceIds: [''],
-      userIds: ['']
+  constructor(private fb: FormBuilder, private registerUser: RegisterService,private router: Router) {
+    this.registerUserFrom = this.fb.group({
+      name: ['', [Validators.required]],
+      email: ['', Validators.required],
+      passwordHash: ['', [Validators.required, Validators.minLength(8)]],
+      role: ['', Validators.required]
     });
   }
 
-  onSubmit() {
-    if (this.registerForm.valid) {
-      // Convertir los valores de string a arrays numéricos
-      const formData = {
-        id: Math.floor(Math.random() * 1000), // Generar un ID temporal
-        ...this.registerForm.value,
-        skillIds: this.convertToArray(this.registerForm.value.skillIds),
-        experienceIds: this.convertToArray(this.registerForm.value.experienceIds),
-        userIds: this.convertToArray(this.registerForm.value.userIds)
-      };
 
-      this.registerService.registerProject(formData).subscribe(
+  onSbmit(){
+    if(this.registerUserFrom.valid){
+      const formData = {
+        id: Math.floor(Math.random() * 1000),
+       ...this.registerUserFrom.value,
+       role: parseInt(this.registerUserFrom.value.role)
+      }
+      console.log(formData);
+      this.registerUser.registerUser(formData).subscribe(
         response => {
-          console.log('Proyecto registrado:', response);
-          alert('Proyecto registrado con éxito!');
-          this.registerForm.reset();
+          console.log('Usuario registrado con éxito:', response);
+          localStorage.setItem('token', response.token);  // Asumiendo que el backend retorna un token
+          sessionStorage.setItem('token', response.token);
+          this.router.navigate(['/']);  // Redirige al dashboard o home page  // Agregar rutas adecuadas en su proyecto
+          alert('Usuario registrado con éxito!');
+          this.registerUserFrom.reset();
         },
         error => {
-          console.error('Error al registrar el proyecto:', error);
-          alert('Hubo un error al registrar el proyecto');
+          console.error('Error al registrar el usuario:', error);
+          alert('Hubo un error al registrar el usuario');
         }
       );
+    }else{
+      alert('Por favor, complete todos los campos correctamente.');
     }
   }
 
-  private convertToArray(value: string): number[] {
-    return value ? value.split(',').map(Number).filter(num => !isNaN(num)) : [];
-  }
-
+  
 }

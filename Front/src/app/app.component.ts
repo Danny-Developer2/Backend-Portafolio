@@ -24,6 +24,7 @@ export class AppComponent {
 
   logout(){
     sessionStorage.removeItem('token'); // Elimina el token de sesión
+    localStorage.removeItem('token'); // Elimina el token de localStorage
     this.router.navigate(['/']); // Redirige al login
   }
 }

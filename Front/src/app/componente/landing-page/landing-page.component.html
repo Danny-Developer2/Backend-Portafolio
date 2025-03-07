@@ -1,99 +1,135 @@
-<section class="container mt-5">
-  <div class="row align-items-center">
-    <!-- Texto a la izquierda -->
-    <div class="col-lg-6" style="font-family: 'Roboto', sans-serif; text-align: center; padding: 50px; background-color: #f4f4f4; border-radius: 10px; margin-left: 90px;">
-      <h1 style="color: #333; font-size: 3rem; font-weight: bold;">Soy Juan Luevano Ruiz</h1>
-      <p style="color: #555; font-size: 1.2rem; font-weight: 500;">Desarrollador Backend .Net</p>
-      <button class="btn btn-primary" style="font-size: 1.1rem; padding: 10px 20px;">Descargar CV</button>
-    </div>
-    
-
-    <!-- Imagen a la derecha -->
-    <div class="col-lg-5 text-center margin-left: 40px;">
-      <img [src]="'images/photo.png'" alt="Foto Juan" class="img-fluid" />
-    </div>
-  </div>
-</section>
-<section class="container mt-5">
-  <div class="row align-items-center">
-    <!-- Tu contenido aquí -->
-
-    <!-- Listado de habilidades -->
-    <h2 class="img-fluid text-center">Desarrollador Backend y Front End</h2>
-    <img
-      [src]="'images/section2.png'"
-      alt="Backend Developer Imagen"
-      class="img-fluid w-100"
-    />
-  </div>
-</section>
-
-<section class="container mt-5">
-  <div class="row align-items-center">
-    <!-- Tu contenido aquí -->
-
-    <!-- Proyectos -->
-    <h2 class="img-fluid text-center">Proyectos Realizados</h2>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      <div class="col">
-        <div class="card shadow-sm">
-          <svg
-            class="bd-placeholder-img card-img-top"
-            width="100%"
-            height="225"
-            xmlns="http://www.w3.org/2000/svg"
-            role="img"
-            aria-label="Placeholder: Thumbnail"
-            preserveAspectRatio="xMidYMid slice"
-            focusable="false"
-          >
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#55595c"></rect>
-            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-          </svg>
-          <div class="card-body">
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">
-                  View
-                </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">
-                  Edit
-                </button>
-              </div>
-              <small class="text-body-secondary">9 mins</small>
-            </div>
-          </div>
-        </div>
+<div>
+  <section class="container mt-5">
+    <div class="row align-items-center">
+      <!-- Texto a la izquierda -->
+      <div class="col-lg-6" style="font-family: 'Roboto', sans-serif; text-align: center; padding: 50px;  border-radius: 10px; margin-left: 90px;">
+        <h1 style="color: #333; font-size: 3rem; font-weight: bold;">Soy Juan Luevano Ruiz</h1>
+        <p style="color: #555; font-size: 1.2rem; font-weight: 500;">Desarrollador Backend .Net</p>
+        <button class="btn btn-secondary" style="font-size: 1.1rem; padding: 10px 20px; width: 300px; background-color: D9D9D9;">Descargar CV</button>
+      </div>
+      
+  
+      <!-- Imagen a la derecha -->
+      <div class="col-lg-5 text-center margin-left: 40px;">
+        <img [src]="'images/photo.png'" alt="Foto Juan" class="img-fluid" />
       </div>
     </div>
-  </div>
-</section>
-
-<section class="container my-5">
-  <div class="row align-items-center">
-    <!-- Imagen a la izquierda -->
-    <div class="col-lg-6 text-center">
-      <img [src]="'images/profile.png'" alt="Foto de Juan Luevano" class="img-fluid rounded">
+  </section>
+  <section class="container mt-5">
+    <div class="row align-items-center">
+      <!-- Tu contenido aquí -->
+  
+      <!-- Listado de habilidades -->
+      <h2 class="img-fluid text-center">Desarrollador Backend y Front End</h2>
+      <img
+        [src]="'images/section2.png'"
+        alt="Backend Developer Imagen"
+        class="img-fluid w-100"
+      />
     </div>
-
-    <!-- Texto a la derecha -->
-    <div class="col-lg-6">
-      <h2 class="mb-3">Sobre mí</h2>
-      <p>
-        Soy Juan Luevano Ruiz, un apasionado desarrollador Backend especializado en .NET.  
-        Me encanta crear soluciones eficientes y escalables para resolver problemas del mundo real.  
-        Con varios años de experiencia, disfruto trabajar con tecnologías modernas y aprender constantemente.
-      </p>
-      <button class="btn btn-primary">Ver más</button>
+  </section>
+  <section class="container mt-5">
+    <h2 class="text-center">Proyectos Realizados</h2>
+  
+    @if (displayedProjects.length > 0) {
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+        @for (project of displayedProjects; track project.id) {
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <!-- Imagen del proyecto -->
+              <img
+                [src]=" 'images/placeholder.jpg'"
+                class="card-img-top"
+                alt="Project image"
+                style="height: 225px; object-fit: cover;"
+              />
+  
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ project.name }}</h5>
+                <p class="card-text text-truncate">{{ project.description }}</p>
+                <p><strong>Tecnología:</strong> {{ project.technology }}</p>
+  
+                <div class="mt-auto">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary">
+                        Ver
+                      </button>
+                      @if(role == 'Admin'){
+                        <button type="button" class="btn btn-sm btn-outline-secondary">
+                          Editar
+                        </button>
+                      }
+                      
+                    </div>
+                    <!-- Botones de redes sociales con espacio -->
+                    <div class="d-flex justify-content-start">
+                      <button type="button" class="btn btn-sm btn-outline-secondary mr-3">
+                        <i class="fab fa-github"></i> 
+                      </button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary">
+                        <i class="fab fa-linkedin"></i> 
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+  
+      <!-- Paginación -->
+      <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+          <!-- Botón "Anterior" -->
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" (click)="changePage(currentPage - 1)">
+              Anterior
+            </button>
+          </li>
+  
+          <!-- Generación dinámica de los números de página -->
+          <!-- Aquí agregamos la lógica del paginado dinámico -->
+  
+          <!-- Botón "Siguiente" -->
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <button class="page-link" (click)="changePage(currentPage + 1)">
+              Siguiente
+            </button>
+          </li>
+        </ul>
+      </nav>
+  
+    } @else {
+      <p class="text-center text-muted">No hay proyectos disponibles.</p>
+    }
+  </section>
+  
+  
+  
+  
+  <section class="container my-5">
+    <div class="row align-items-center">
+      <!-- Imagen a la izquierda -->
+      <div class="col-lg-6 text-center">
+        <img [src]="'images/profile.png'" alt="Foto de Juan Luevano" class="img-fluid rounded">
+      </div>
+  
+      <!-- Texto a la derecha -->
+      <div class="col-lg-6">
+        <h2 class="mb-3">Sobre mí</h2>
+        <p>
+          Soy Juan Luevano Ruiz, un apasionado desarrollador Backend especializado en .NET.  
+          Me encanta crear soluciones eficientes y escalables para resolver problemas del mundo real.  
+          Con varios años de experiencia, disfruto trabajar con tecnologías modernas y aprender constantemente.
+        </p>
+        <button class="btn btn-primary">Ver más</button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+  
+</div>
 
 
 <app-footer></app-footer>

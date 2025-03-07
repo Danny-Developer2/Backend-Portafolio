@@ -26,7 +26,7 @@ namespace API.Controllers
 
         // Obtener todos los proyectos
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Admin")]
         [HttpGet]
         // public async Task<ActionResult<IEnumerable<ProyectDTO>>> GetProjects(int id)
         // {
