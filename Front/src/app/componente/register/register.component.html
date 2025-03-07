@@ -40,16 +40,18 @@
       
         <div class="mb-3">
           <label for="role" class="form-label">Rol:</label>
-          <input id="role" type="text" class="form-control" formControlName="role" placeholder="Ejemplo: 1,2,3" />
-         @if(registerUserFrom.get('role')?.invalid && registerUserFrom.get('role')?.touched){
-            <div class="text-danger small" >
-                <small>El rol es obligatorio.</small>
-              </div>
-    
-         } 
-          
+          <select id="role" class="form-control" formControlName="role">
+            <option value="">Seleccione un rol</option>
+            <option [value]="0">User</option>
+            <option [value]="1">Admin</option>
+          </select>
+        
+          @if(registerUserFrom.get('role')?.invalid && registerUserFrom.get('role')?.touched){
+            <div class="text-danger small">
+              <small>El rol es obligatorio.</small>
+            </div>
+          } 
         </div>
-       <h1>{{registerUserFrom.invalid}}</h1>
         <button type="submit" class="btn btn-primary w-100" [disabled]="registerUserFrom.invalid">
           Registrar
         </button>

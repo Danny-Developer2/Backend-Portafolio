@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators  } from '@angular/forms';
 import { RegisterProjectsService } from '../../services/registerProjets.service';
+import { GetSkillsService, Skills } from '../../services/get-skills.service';
+
 
 @Component({
   selector: 'app-register',
@@ -9,10 +11,14 @@ import { RegisterProjectsService } from '../../services/registerProjets.service'
 })
 export class RegisterProjectComponent {
 
+  token: string | null=null;
+  skills: Skills[] = [];
+  experiences: string[] = [];
+
 
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private registerService: RegisterProjectsService) {
+  constructor(private fb: FormBuilder, private registerService: RegisterProjectsService, private getSkillsService:GetSkillsService) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -25,7 +31,11 @@ export class RegisterProjectComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.getSkills(); // Llamar al método para obtener las habilidades al cargar el componente
+  }
   onSubmit() {
+
     if (this.registerForm.valid) {
       // Convertir los valores de string a arrays numéricos
       const formData = {
@@ -35,8 +45,12 @@ export class RegisterProjectComponent {
         experienceIds: this.convertToArray(this.registerForm.value.experienceIds),
         userIds: this.convertToArray(this.registerForm.value.userIds)
       };
-
-      this.registerService.registerProject(formData).subscribe(
+      this.token = localStorage.getItem('token')
+      if (!this.token) {
+        alert('No se encontró un token de autenticación');
+        return;
+      }
+      this.registerService.registerProject(formData,this.token!).subscribe(
         response => {
           console.log('Proyecto registrado:', response);
           alert('Proyecto registrado con éxito!');
@@ -53,5 +67,21 @@ export class RegisterProjectComponent {
   private convertToArray(value: string): number[] {
     return value ? value.split(',').map(Number).filter(num => !isNaN(num)) : [];
   }
+
+  getSkills(): any{
+    this.getSkillsService.getSkills().subscribe(
+      (data) => {
+        this.skills = data;
+        console.log('Habilidades obtenidas:', this.skills);
+      },
+      (error) => {
+        console.error('Error al obtener las habilidades:', error);
+      }
+
+  
+    );
+  }
+
+  
 
 }

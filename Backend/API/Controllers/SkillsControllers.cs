@@ -22,7 +22,7 @@ namespace API.Controllers
         }
 
         // Obtener todas las habilidades
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppSkill>>> GetSkills()
         {

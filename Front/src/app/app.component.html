@@ -21,7 +21,10 @@
         />
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
           <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
-          <li><a class="dropdown-item" >Create Project</a></li>
+          @if(getToken() == 'Admin'){
+            <li><a class="dropdown-item" [routerLink]="['register-projects']" >Create Project</a></li>
+          }
+         
         </ul>
       </div>
       } @else {

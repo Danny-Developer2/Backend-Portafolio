@@ -34,20 +34,33 @@
   
       <!-- IDs (ejemplo con input simple, puedes mejorarlo con select múltiple) -->
       <div class="mb-3">
-        <label for="skillIds" class="form-label">Habilidades (IDs separados por coma)</label>
-        <input type="text" id="skillIds" class="form-control" formControlName="skillIds" />
+        <label for="skillIds" class="form-label">Habilidades:</label>
+        <select name="skillIds" class="form-control" formControlName="skillIds">
+          <option value="">Seleciona las habilidades:</option>
+          @for(skill of skills; track skill.id){
+            <option [value]="skill.id">{{ skill.name }}</option>
+          }
+          <!-- <option [value]="0">Prueba</option> -->
+        </select>
+        <!-- <input type="text" id="skillIds" class="form-control" formControlName="skillIds" /> -->
       </div>
   
       <div class="mb-3">
-        <label for="experienceIds" class="form-label">Experiencia (IDs separados por coma)</label>
-        <input type="text" id="experienceIds" class="form-control" formControlName="experienceIds" />
+        <label for="experienceIds" class="form-label">Experiencias:</label>
+        <select name="experienceIds" class="form-control" formControlName="experienceIds">
+          <option value="">Seleccione las Experiencias:</option>
+          <option [value]="0">Prueba</option>
+        </select>
+
       </div>
+
+      <!-- Retirar este apartado de Usuarios no es necesario en la creacion de proyectos remover del backend-->
   
-      <div class="mb-3">
+      <!-- <div class="mb-3">
         <label for="userIds" class="form-label">Usuarios (IDs separados por coma)</label>
         <input type="text" id="userIds" class="form-control" formControlName="userIds" />
       </div>
-  
+   -->
       <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Registrar</button>
     </form>
   </div>
