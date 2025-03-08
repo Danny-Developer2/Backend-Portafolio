@@ -1,0 +1,28 @@
+<div class="d-flex vh-100">
+    <!-- Sidebar (Menú Lateral) -->
+    <nav class="sidebar bg-white text-dark p-3">
+      <h4 class="text-center">Dashboard</h4>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link text-dark" [routerLink]="['/home']">🏠 Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" [routerLink]="['/profile']">👤 Perfil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" [routerLink]="['/settings']">⚙️ Configuración</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" [routerLink]="['/reports']">📊 Reportes</a>
+        </li>
+      </ul>
+    </nav>
+  
+    <!-- Contenido Principal -->
+    <div class="content p-4 flex-grow-1">
+      <h2>Bienvenido al Dashboard</h2>
+      <p>Aquí va el contenido de tu aplicación.</p>
+    </div>
+  </div>
+  
+<app-footer></app-footer>

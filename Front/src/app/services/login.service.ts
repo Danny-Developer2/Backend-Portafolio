@@ -25,4 +25,12 @@ export class LoginService {
     // Realiza la solicitud POST
     return this.http.post(this.baseUrl, body);
   }
+
+  isTokenExpired(): boolean {
+    const expiration = localStorage.getItem('expirationTime');
+    if (!expiration) return true; // Si no hay expiración, se considera expirado
+  
+    const now = new Date().getTime();
+    return now > parseInt(expiration); // Retorna true si ha expirado
+  }
 }

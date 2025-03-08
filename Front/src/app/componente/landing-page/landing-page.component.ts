@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FooterComponent } from '../footer/footer.component';
 import { Project, ProjectsService } from '../../services/projects.service';
 import {jwtDecode} from 'jwt-decode'; 
+import { LoginService } from '../../services/login.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -14,7 +16,7 @@ import {jwtDecode} from 'jwt-decode';
 })
 export class LandingPageComponent implements OnInit  {
 
-  constructor(private projectsService: ProjectsService) { }
+  constructor(private projectsService: ProjectsService,private loginService:LoginService,private router: Router) { }
   projects: Project[] = [];
   displayedProjects: Project[] = []; // Proyectos visibles en la página actual
   currentPage: number = 1; 
@@ -22,6 +24,7 @@ export class LandingPageComponent implements OnInit  {
   paginasTotal: number = 1; //
   token: string | null = null;
   role: string = '';
+
 
   // ngOnInit(): void {
   //   this.projectsService.getProjects().subscribe({
@@ -51,6 +54,11 @@ export class LandingPageComponent implements OnInit  {
       console.log('Token:', this.token);
       this.updateDisplayedProjects();
     });
+    //TODO Se encarga de validar que el token sea valido si no lo es cierra la session
+    this.checkSession() && this.logout();
+
+      
+    
   }
 
   // Función para actualizar la lista de proyectos según la página actual
@@ -71,6 +79,19 @@ export class LandingPageComponent implements OnInit  {
 get totalPages(): number {
   return this.paginasTotal= Math.max(1, Math.ceil(this.projects.length / this.projectsPerPage));
 }
+checkSession() {
+  return this.loginService.isTokenExpired();
+  
+}
+// TODO Ver la forma de implementar este logout desde un servicio 
+logout(){
+  sessionStorage.removeItem('token'); // Elimina el token de sesión
+  localStorage.removeItem('token'); // Elimina el token de localStorage
+  localStorage.removeItem('expirationTime');
+  this.router.navigate(['/']); // Redirige al login
+}
+
+
 
 }
 

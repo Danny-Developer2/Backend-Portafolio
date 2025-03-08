@@ -24,6 +24,9 @@
           @if(getToken() == 'Admin'){
             <li><a class="dropdown-item" [routerLink]="['register-projects']" >Create Project</a></li>
           }
+          @if(getToken() == 'Admin'){
+            <li><a class="dropdown-item" [routerLink]="['/dashboard']" >Dashboard</a></li>
+          }
          
         </ul>
       </div>

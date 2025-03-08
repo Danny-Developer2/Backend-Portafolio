@@ -43,6 +43,7 @@ export class AppComponent {
   logout(){
     sessionStorage.removeItem('token'); // Elimina el token de sesión
     localStorage.removeItem('token'); // Elimina el token de localStorage
+    localStorage.removeItem('expirationTime');
     this.router.navigate(['/']); // Redirige al login
   }
 
