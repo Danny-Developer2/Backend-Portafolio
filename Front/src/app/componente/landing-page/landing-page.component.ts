@@ -4,6 +4,7 @@ import { Project, ProjectsService } from '../../services/projects.service';
 import {jwtDecode} from 'jwt-decode'; 
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
+import { RoleUser } from '../../services/role-user.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { Router } from '@angular/router';
 })
 export class LandingPageComponent implements OnInit  {
 
-  constructor(private projectsService: ProjectsService,private loginService:LoginService,private router: Router) { }
+  constructor(private projectsService: ProjectsService,private loginService:LoginService,private router: Router, private roleUser:RoleUser) { }
   projects: Project[] = [];
   displayedProjects: Project[] = []; // Proyectos visibles en la página actual
   currentPage: number = 1; 
@@ -41,21 +42,14 @@ export class LandingPageComponent implements OnInit  {
   ngOnInit() {
     // Llamar al servicio para obtener los proyectos
     this.projectsService.getProjects().subscribe((data: Project[]) => {
+      const token = localStorage.getItem('token')
       this.projects = data;
-      console.log('Proyectos obtenidos:', data);
-      this.token = localStorage.getItem('token')
-      if (this.token) {
-        const decodedToken: any = jwtDecode(this.token);
-        this.role = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-
-        console.log('Rol del usuarios:', this.role);
-      }
-      
-      console.log('Token:', this.token);
+      this.role = this.roleUser.roleUser(token!)
       this.updateDisplayedProjects();
     });
     //TODO Se encarga de validar que el token sea valido si no lo es cierra la session
-    this.checkSession() && this.logout();
+    this.loginService.checkSession() && this.loginService.logout();
+    // console.log(this.loginService.checkSession());
 
       
     
@@ -79,17 +73,9 @@ export class LandingPageComponent implements OnInit  {
 get totalPages(): number {
   return this.paginasTotal= Math.max(1, Math.ceil(this.projects.length / this.projectsPerPage));
 }
-checkSession() {
-  return this.loginService.isTokenExpired();
-  
-}
-// TODO Ver la forma de implementar este logout desde un servicio 
-logout(){
-  sessionStorage.removeItem('token'); // Elimina el token de sesión
-  localStorage.removeItem('token'); // Elimina el token de localStorage
-  localStorage.removeItem('expirationTime');
-  this.router.navigate(['/']); // Redirige al login
-}
+
+
+
 
 
 

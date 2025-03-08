@@ -31,6 +31,19 @@ export class LoginService {
     if (!expiration) return true; // Si no hay expiración, se considera expirado
   
     const now = new Date().getTime();
-    return now > parseInt(expiration); // Retorna true si ha expirado
+    return now > parseInt(expiration) * 1000; // Retorna true si ha expirado
   }
+
+  logout(){
+    sessionStorage.removeItem('token'); // Elimina el token de sesión
+    localStorage.removeItem('token'); // Elimina el token de localStorage
+    localStorage.removeItem('expirationTime');
+    this.router.navigate(['/']); // Redirige al login
+  }
+
+  checkSession() {
+    return this.isTokenExpired();
+    
+  }
+  
 }

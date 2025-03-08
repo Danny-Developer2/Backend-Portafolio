@@ -1,59 +1,74 @@
 {
-  "hash": "97bbdd7e",
-  "configHash": "8375bcca",
-  "lockfileHash": "e1844418",
-  "browserHash": "1934447a",
+  "hash": "1345ea0d",
+  "configHash": "b66d5c2d",
+  "lockfileHash": "c7e72e8e",
+  "browserHash": "4444aac5",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "5f415e50",
+      "fileHash": "8097bff8",
       "needsInterop": false
     },
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
-      "fileHash": "fc881da1",
+      "fileHash": "755c0866",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "eea48c60",
+      "fileHash": "f320a225",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "9d32bc98",
+      "fileHash": "e4c8c3ee",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "9a0313bf",
+      "fileHash": "76ead737",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "27893a5c",
+      "fileHash": "a2991a72",
       "needsInterop": false
     },
     "rxjs": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
       "file": "rxjs.js",
-      "fileHash": "24715650",
+      "fileHash": "be0dc4bf",
       "needsInterop": false
     },
     "jwt-decode": {
       "src": "../../../../../../node_modules/jwt-decode/build/esm/index.js",
       "file": "jwt-decode.js",
-      "fileHash": "80a24310",
+      "fileHash": "6bf733fd",
+      "needsInterop": false
+    },
+    "@angular/platform-browser/animations": {
+      "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/animations.mjs",
+      "file": "@angular_platform-browser_animations.js",
+      "fileHash": "cdaacc06",
+      "needsInterop": false
+    },
+    "ngx-toastr": {
+      "src": "../../../../../../node_modules/ngx-toastr/fesm2022/ngx-toastr.mjs",
+      "file": "ngx-toastr.js",
+      "fileHash": "389a7986",
       "needsInterop": false
     }
   },
   "chunks": {
+    "chunk-ZOQ44VTK": {
+      "file": "chunk-ZOQ44VTK.js"
+    },
     "chunk-QNUUD5S7": {
       "file": "chunk-QNUUD5S7.js"
     },
