@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-detail-project',
@@ -20,6 +21,8 @@ export class DetailProjectComponent {
 
   project!: Project;
   id: number = 0;
+  role: string = '';
+  token: string | null = null // Obtiene el token actual
   
 
   constructor(private projectService:ProjectsService,  private route: ActivatedRoute,  private redirect: Router, private toastr: ToastrService,){}
@@ -84,6 +87,17 @@ export class DetailProjectComponent {
       }
     }
   
+      getToken(): string {
+        this.token = sessionStorage.getItem('token') || localStorage.getItem('token'); // Retorna el token de sesión o localStorage, según sea el primero disponible
+        if (this.token) {
+          const decodedToken: any = jwtDecode(this.token);
+          this.role = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      
+          // console.log('Rol del usuario:', this.role);
+        }
+        return this.role;
+      }
+    
     
   }
 

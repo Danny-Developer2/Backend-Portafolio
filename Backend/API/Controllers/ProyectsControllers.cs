@@ -299,7 +299,7 @@ namespace API.Controllers
 
 
         // Actualizar un proyecto existente
-        [Authorize(Roles = "User")]
+        // [Authorize(Roles = "User")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProject(int id, ProyectDTO updatedProject)
         {

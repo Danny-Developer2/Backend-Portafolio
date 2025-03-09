@@ -36,7 +36,7 @@ export class AppComponent {
 
 
   usuarioLogeado(): boolean {
-    return !!sessionStorage.getItem('token'); // Retorna true si hay un usuario, false si no
+    return !!localStorage.getItem('token'); // Retorna true si hay un usuario, false si no
   }
 
 

@@ -5,6 +5,7 @@ import {jwtDecode} from 'jwt-decode';
 import { LoginService } from '../../services/login.service';
 import { Router, RouterLink } from '@angular/router';
 import { RoleUser } from '../../services/role-user.service';
+import { ImageValidateUrlService } from '../../services/image-validate-url.service';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { RoleUser } from '../../services/role-user.service';
 })
 export class LandingPageComponent implements OnInit  {
 
-  constructor(private projectsService: ProjectsService,private loginService:LoginService,private router: Router, private roleUser:RoleUser) { }
+  constructor(private projectsService: ProjectsService,private loginService:LoginService,private router: Router, private roleUser:RoleUser,) { }
   projects: Project[] = [];
   displayedProjects: Project[] = []; // Proyectos visibles en la página actual
   currentPage: number = 1; 
@@ -39,7 +40,7 @@ export class LandingPageComponent implements OnInit  {
   //   });
   // }
 
-  ngOnInit() {
+  ngOnInit()  {
     // Llamar al servicio para obtener los proyectos
     this.projectsService.getProjects().subscribe((data: Project[]) => {
       const token = localStorage.getItem('token')
@@ -73,7 +74,6 @@ export class LandingPageComponent implements OnInit  {
 get totalPages(): number {
   return this.paginasTotal= Math.max(1, Math.ceil(this.projects.length / this.projectsPerPage));
 }
-
 
 
 

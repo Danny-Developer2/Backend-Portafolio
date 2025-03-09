@@ -2,8 +2,19 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, Observable, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 
+
+
+
+export interface updateProject {
+  id: number;
+  name: string;
+  description: string;
+  technology: string;
+  url: string;
+  imgUrl: string;
+}
 export interface Project {
   id: number;
   name: string;
@@ -124,6 +135,24 @@ export class ProjectsService {
       console.error('ID de proyecto no válido');
     }
   }
+
+
+  updateProject(id: number, project: any): Observable<boolean> {
+    return this.http
+      .put<string>(`${this.baseUrl}/${id}`, project, { responseType: 'text' as 'json' })
+      .pipe(
+        map((response) => {
+          console.log('Respuesta del servidor:', response);
+          return true; // Devuelve true si la actualización fue exitosa
+        }),
+        catchError((error) => {
+          console.error('Error al actualizar el proyecto:', error.message);
+          return of (false); // Devuelve false en caso de error
+        })
+      );
+  }
+  
+  
   
   
 
