@@ -1,0 +1,127 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg row-cols-md-4 col-md-9 col-lg-8" style="max-width: 100%; height: auto; border-radius: 15px; position: relative; display: flex; flex-direction: row; padding: 2%;">
+        
+        <!-- Imagen del proyecto (Columna de la izquierda) -->
+        <div class="col-12 col-md-5" style="padding: 0; border-top-left-radius: 15px; border-bottom-left-radius: 15px;">
+            @if(project.imgUrl){
+                <img [src]="project.imgUrl" class="card-img-left" alt="Project Image" 
+                     style="width: 100%; height: auto; object-fit: cover; border-top-left-radius: 15px; border-bottom-left-radius: 15px;" />
+            } @else {
+                <img [src]="'images/placeholder.jpg'" class="card-img-left" alt="Project Image" 
+                     style="width: 100%; height: auto; object-fit: cover; border-top-left-radius: 15px; border-bottom-left-radius: 15px;" />
+            }
+            
+            <!-- Sección de Skills -->
+            <h2 class="text-center" style="font-family: 'Roboto', sans-serif; font-size: 1.2rem; color: #333;">Skills:</h2>
+
+            <!-- Verificación de Skills -->
+            @if(project.skills.$values.length == 0){
+                <p class="text-center" style="font-family: 'Open Sans', sans-serif; font-size: 0.9rem; color: #777;">
+                    No existen skills asignadas en este proyecto
+                </p>
+            }
+
+            <!-- Mostrar Skills -->
+            @for(skill of project.skills.$values; track skill.id){
+                <span class="badge bg-primary m-1" style="font-family: 'Open Sans', sans-serif; font-size: 0.9rem; border-radius: 12px;">
+                    {{ skill.name }}
+                </span>
+            }
+
+           
+        </div>
+
+        <!-- Información del proyecto (Columna de la derecha) -->
+        <div class="card-body text-start col-12 col-md-7" style="padding: 2rem; text-align: justify;">
+            <!-- Título del proyecto -->
+            <h2 class="card-title" style="font-family: 'Roboto', sans-serif; font-size: 1.5rem; font-weight: bold; color: #333;">
+                Nombre del proyecto:
+            </h2>
+            <p>{{ project.name }}</p>
+
+            <!-- Descripción del proyecto -->
+            <h2 class="card-text" style="font-family: 'Open Sans', sans-serif; font-size: 1.5rem; color: #333;">
+                Descripción:
+            </h2>
+            <p> {{ project.description }}</p>
+
+            <!-- Tecnología utilizada -->
+            <p class="card-text" style="font-family: 'Open Sans', sans-serif; font-size: 1.5rem; color: #333;">
+                Tecnología: 
+            </p>
+            <p>{{ project.technology }}</p>
+
+             <!-- Sección de Experience -->
+             <h2 class="" style=" font-family: 'Roboto', sans-serif; font-size: 1.5rem; color: #333;">Experience:</h2>
+
+             <!-- Verificación de Experience -->
+             @if(project.experience.$values.length == 0){
+                 <p class="text-center" style="font-family: 'Open Sans', sans-serif; font-size: 0.9rem; color: #777;">
+                     No existen experiencias asignadas en este proyecto
+                 </p>
+             }
+ 
+             <!-- Mostrar Experience -->
+             @for(experience of project.experience.$values; track experience.id){
+                 <div style="text-align: left; font-family: 'Open Sans', sans-serif; font-size: 0.9rem; color: #555;">
+                     <p>
+                         Empresa: {{experience.companyName }}
+                     </p>
+                     <p>Puesto: {{ experience.position }}</p>
+                     <p>Fecha: 
+                        {{ experience.startDate | date: 'dd/MM/yyyy' }} - {{ experience.endDate | date: 'dd/MM/yyyy' }}</p>
+                     <p>Experiencia: {{ experience.description }}</p>
+                 </div>
+             }
+             <div class="d-flex justify-content-end align-items-end position-absolute" style="bottom: 87%; right: 25px; gap: 10px;">
+             <a [href]="['/']" class="btn btn-danger btn-lg" 
+             style="font-family: 'Roboto', sans-serif; font-size: 1.2rem; padding: 5px 20px; border-radius: 50px; transition: 0.3s; 
+             background-color: rgba(222, 46, 184, 0.8); /* Rojo con 80% de opacidad */
+             border: 2px solid rgba(192, 57, 43, 0.8); /* Rojo más oscuro con 80% de opacidad */
+             color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+             text-transform: uppercase; font-weight: bold; text-decoration: none;">
+               <i class="fas fa-arrow-left"></i>
+               <span class="text-white"> Regresar</span>
+          </a>
+          
+        </div>
+            <!-- Botones (Alineados en la parte inferior derecha) -->
+            <div class="d-flex justify-content-end align-items-end position-absolute" style="bottom: 2%; right: 10px; gap: 10px;">
+                <!-- Botón de Eliminar con transparencia -->
+                <a (click)="confirmDelete(project.id)" class="btn btn-danger btn-lg" 
+                   style="font-family: 'Roboto', sans-serif; font-size: 1.2rem; padding: 5px 20px; border-radius: 50px; transition: 0.3s; 
+                   background-color: rgba(231, 76, 60, 0.8); /* Rojo con 80% de opacidad */
+                   border: 2px solid rgba(192, 57, 43, 0.8); /* Rojo más oscuro con 80% de opacidad */
+                   color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+                   text-transform: uppercase; font-weight: bold; text-decoration: none;">
+                    <span class="text-white">Eliminar</span>
+                </a>
+                
+                <!-- Botón de Editar con transparencia -->
+                <a [href]="project.url" class="btn btn-secondary btn-lg" 
+                   style="font-family: 'Roboto', sans-serif; font-size: 1.2rem; padding: 5px 20px; border-radius: 50px; transition: 0.3s; 
+                   background-color: rgba(52, 152, 219, 0.8); /* Azul con 80% de opacidad */
+                   border: 2px solid rgba(41, 128, 185, 0.8); /* Azul más oscuro con 80% de opacidad */
+                   color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+                   text-transform: uppercase; font-weight: bold; text-decoration: none;">
+                    <span class="text-white">Editar</span>
+                </a>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+<app-footer></app-footer>
+
+<!-- 
+  id: number;
+  name: string;
+  description: string;
+  technology: string;
+  url: string;
+  imgUrl: string;
+  skills: { $values: Skill[] };
+  experience: { $values: Experience[] };
+  -->

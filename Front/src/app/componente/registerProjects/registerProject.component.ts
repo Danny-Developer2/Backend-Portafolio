@@ -3,11 +3,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators  } from '@angul
 import { RegisterProjectsService } from '../../services/registerProjets.service';
 import { GetSkillsService, Skills } from '../../services/get-skills.service';
 import {Experiences, GetExperiencesService} from '../../services/get-experiences.service';
+import { FooterComponent } from '../footer/footer.component';
 
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,FooterComponent],
   templateUrl: './register.component.html',
 })
 export class RegisterProjectComponent {
@@ -15,7 +16,9 @@ export class RegisterProjectComponent {
   token: string | null=null;
   skills: Skills[] = [];
   experiences: Experiences[] = [];
+  skillsSelected: number[] = [];
 
+  
 
   registerForm: FormGroup;
 
@@ -26,8 +29,8 @@ export class RegisterProjectComponent {
       technology: ['', Validators.required],
       url: ['', [Validators.required, Validators.pattern('https?://.+')]],
       imgUrl: ['', [Validators.required, Validators.pattern('https?://.+')]],
-      skillIds: [''],
-      experienceIds: [''],
+      skillIds:  [[],[Validators.required, Validators.minLength(5)]],
+      experienceIds: ['', Validators.required],
       userIds: ['']
     });
   }
@@ -39,11 +42,12 @@ export class RegisterProjectComponent {
   onSubmit() {
 
     if (this.registerForm.valid) {
+
       // Convertir los valores de string a arrays numéricos
       const formData = {
         id: Math.floor(Math.random() * 1000), // Generar un ID temporal
         ...this.registerForm.value,
-        skillIds: this.convertToArray(this.registerForm.value.skillIds),
+        skillIds: this.skillsSelected,
         experienceIds: this.convertToArray(this.registerForm.value.experienceIds),
         userIds: this.convertToArray(this.registerForm.value.userIds)
       };
@@ -57,6 +61,7 @@ export class RegisterProjectComponent {
           console.log('Proyecto registrado:', response);
           alert('Proyecto registrado con éxito!');
           this.registerForm.reset();
+          this.skillsSelected = []; // Resetear los seleccionados de habilidades
         },
         error => {
           console.error('Error al registrar el proyecto:', error);
@@ -96,6 +101,24 @@ export class RegisterProjectComponent {
 
   
     );
+  }
+
+
+
+   // Método para manejar el cambio en los checkboxes
+   onSkillChange(event: any) {
+    const skillId = Number(event.target.value);
+    if (event.target.checked) {
+      this.skillsSelected.push(skillId);
+    } else {
+      this.skillsSelected = this.skillsSelected.filter(id => id !== skillId);
+    }
+    this.registerForm.controls['skillIds'].setValue(this.skillsSelected);
+    this.registerForm.controls['skillIds'].updateValueAndValidity();
+  }
+   // Método para verificar si una habilidad está seleccionada
+   isSkillSelected(skillId: number): boolean {
+    return this.skillsSelected.includes(skillId);
   }
 
   

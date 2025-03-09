@@ -3,14 +3,14 @@ import { FooterComponent } from '../footer/footer.component';
 import { Project, ProjectsService } from '../../services/projects.service';
 import {jwtDecode} from 'jwt-decode'; 
 import { LoginService } from '../../services/login.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { RoleUser } from '../../services/role-user.service';
 
 
 @Component({
   selector: 'app-landing-page',
   imports: [
-    FooterComponent
+    FooterComponent,RouterLink
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss'

@@ -119,29 +119,68 @@ namespace API.Controllers
 
 
         // Obtener un proyecto por ID
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppProyect>> GetProjectById(int id)
         {
             try
             {
-                var project = await _context.Projects.FindAsync(id);
+                // Obtener el proyecto con el id solicitado, junto con los detalles de habilidades y experiencias
+                var project = await _context.Projects
+                    .Where(p => p.Id == id) // Filtrar por id
+                    .Select(p => new ProyectDTO
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Description = p.Description,
+                        Technology = p.Technology,
+                        Url = p.Url,
+                        ImgUrl = p.ImgUrl,
+
+                        // Proyección de habilidades con los detalles completos
+                        Skills = p.ProyectSkills!.Any() ? p.ProyectSkills!.Select(ps => new SkillsDTO
+                        {
+                            Id = ps.Skill!.Id,
+                            SkillName = ps.Skill.Name,
+                            IconUrl = ps.Skill.IconUrl,
+                            Percentage = ps.Skill.Percentage,
+                            Name = ps.Skill.Name,
+                            Description = ps.Skill.Description
+                        }).ToList() : new List<SkillsDTO>(),
+
+                        // Proyección de experiencias con los detalles completos
+                        Experience = p.ProyectExperience!.Any() ? p.ProyectExperience!.Select(pe => new ExperienceDTO
+                        {
+                            Id = pe.Experience!.Id,
+                            CompanyName = pe.Experience.CompanyName,
+                            Position = pe.Experience.Position,
+                            StartDate = pe.Experience.StartDate,
+                            EndDate = pe.Experience.EndDate,
+                            Description = pe.Experience.Description
+                        }).ToList() : new List<ExperienceDTO>(),
+
+                        // Proyección de usuarios asignados con los detalles completos
+                        Users = p.UserProyects!.Any() ? p.UserProyects!.Select(up => new UserDTO
+                        {
+                            Id = up.User!.Id,
+                            Name = up.User.Name,
+                            Email = up.User.Email
+                        }).ToList() : new List<UserDTO>()
+                    })
+                    .FirstOrDefaultAsync(); // Obtener un solo proyecto con el id solicitado
 
                 if (project == null)
                 {
-                    throw new ApiException(404, "El proyecto no fue encontrado."); // Lanza ApiException con código 404
+                    return NotFound(new { message = "Proyecto no encontrado." });
                 }
 
-                return Ok(project);
-            }
-            catch (ApiException ex) // Captura específicamente ApiException
-            {
-                return StatusCode(ex.StatusCode, new { message = ex.Message }); // Devuelve el código de estado correcto
+                return Ok(project); // Devuelve el proyecto con el id especificado y los detalles completos
             }
             catch (Exception ex)
             {
-                throw new ApiException(500, $"Error interno del servidor: {ex.Message}"); // Lanza ApiException con 500
+                return StatusCode(500, $"Error al obtener el proyecto: {ex.Message}");
             }
+
         }
 
 
@@ -307,7 +346,7 @@ namespace API.Controllers
         }
 
         // Eliminar un proyecto
-        [Authorize(Roles = "User")]
+        // [Authorize(Roles = "User")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(int id)
         {

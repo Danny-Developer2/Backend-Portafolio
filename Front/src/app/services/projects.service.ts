@@ -63,6 +63,68 @@ export class ProjectsService {
       tap((data) =>this.projects = data)
     )
   }
+
+  getProjectById(id: number): Observable<Project> {
+    const token = localStorage.getItem('token'); // Obtener el token del localStorage
+  
+    if (!token) {
+      console.error('No se encontró el token en el localStorage.');
+      return new Observable(); // Devuelve un observable vacío para evitar errores
+    }
+  
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    // Corregir la URL para interpolar correctamente el id
+    const url = `${this.baseUrl}/${id}`;
+    return this.http.get<Project>(url, { headers }).pipe(
+      tap((data) => console.log('Respuesta de la API:', data)) // Verifica la respuesta
+    );
+    
+  }
+
+  // deleteProject(id:number): Observable<Project> {
+  //   const token = localStorage.getItem('token'); // Obtener el token del localStorage
+  //   if (!token) {
+  //     console.error('No se encontró el token en el localStorage.');
+  //     return new Observable(); // Devuelve un observable vacío para evitar errores
+  //   }
+  //   const headers = new HttpHeaders({
+  //     'Authorization': `Bearer ${token}`,
+  //     'Content-Type': 'application/json'
+  //   });
+  //   const url = `${this.baseUrl}/${id}`;
+  //   console.log('Eliminando');
+  //   return this.http.delete<Project>(url, { headers }).pipe(
+  //     tap((data) => console.log('Proyecto eliminado:', data)) // Verifica la respuesta
+  //   );
+  // }
+
+  deleteProject(id: number): any {
+    if (id !== null && id !== undefined) {
+      this.http
+        .delete<string>(`${this.baseUrl}/${id}`, { responseType: 'text' as 'json' })
+        .subscribe(
+          (response) => {
+            console.log('Respuesta del servidor:', response); // Respuesta es el texto del backend
+            if (response) {
+              this.getProjects(); // Actualiza la lista de proyectos si la eliminación fue exitosa
+            }
+            return true;
+          },
+          (error) => {
+            console.error('Error al eliminar el proyecto:', error);
+            console.error('Estado del error:', error.status);
+            return false;
+          }
+        );
+    } else {
+      console.error('ID de proyecto no válido');
+    }
+  }
+  
   
 
   

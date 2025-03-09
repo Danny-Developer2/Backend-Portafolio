@@ -1,70 +1,102 @@
-<div class="container mt-4">
-    <h2>Registrar Proyecto</h2>
-    
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <!-- Nombre del proyecto -->
-      <div class="mb-3">
-        <label for="name" class="form-label">Nombre del Proyecto</label>
-        <input type="text" id="name" class="form-control" formControlName="name" required />
-      </div>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100dvh; margin-top: 5rem; margin-bottom: 5rem;">
+  <div class="card shadow-lg p-4 w-100 w-md-75 w-lg-50" style="border-radius: 15px; max-width: 80%;">
+      <div class="card-body">
+        <div class="d-flex justify-content-end align-items-end position-absolute" style="bottom: 93%; right: 25px; gap: 10px;">
+          <a [href]="['/']" class="btn btn-danger btn-lg" 
+          style="font-family: 'Roboto', sans-serif; font-size: 1.2rem; padding: 5px 20px; border-radius: 50px; transition: 0.3s; 
+          background-color: rgba(222, 46, 184, 0.8); /* Rojo con 80% de opacidad */
+          border: 2px solid rgba(192, 57, 43, 0.8); /* Rojo más oscuro con 80% de opacidad */
+          color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+          text-transform: uppercase; font-weight: bold; text-decoration: none;">
+            <i class="fas fa-arrow-left"></i>
+            <span class="text-white"> Regresar</span>
+       </a>
+      
+        </div>
+          <h2 class="text-center mb-5">Registrar Proyecto</h2>
   
-      <!-- Descripción -->
-      <div class="mb-3">
-        <label for="description" class="form-label">Descripción</label>
-        <textarea id="description" class="form-control" formControlName="description" required></textarea>
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+              <!-- Nombre del proyecto -->
+              <div class="mb-3">
+                  <label for="name" class="form-label">Nombre del Proyecto</label>
+                  <input type="text" id="name" class="form-control" formControlName="name" required />
+              </div>
+      
+              <!-- Descripción -->
+              <div class="mb-3">
+                  <label for="description" class="form-label">Descripción</label>
+                  <textarea id="description" class="form-control" formControlName="description" required></textarea>
+              </div>
+      
+              <!-- Tecnología utilizada -->
+              <div class="mb-3">
+                  <label for="technology" class="form-label">Tecnología</label>
+                  <input type="text" id="technology" class="form-control" formControlName="technology" required />
+              </div>
+      
+              <!-- URL del Proyecto -->
+              <div class="mb-3">
+                  <label for="url" class="form-label">URL del Proyecto</label>
+                  <input type="url" id="url" class="form-control" formControlName="url" required />
+              </div>
+      
+              <!-- Imagen del Proyecto -->
+              <div class="mb-3">
+                  <label for="imgUrl" class="form-label">URL de la Imagen</label>
+                  <input type="url" id="imgUrl" class="form-control" formControlName="imgUrl" required />
+              </div>
+      
+              <!-- Habilidades -->
+              <div class="mb-3">
+                  <label for="skillIds" class="form-label fw-bold">Habilidades:</label>
+              
+                  <div class="border p-2 rounded" style="max-height: 250px; overflow-y: auto;">
+                      <div class="d-grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));">
+                          @for(skill of skills; track skill.id){
+                              <div class="form-check">
+                                  <input 
+                                      type="checkbox" 
+                                      class="form-check-input" 
+                                      [value]="skill.id" 
+                                      (change)="onSkillChange($event)"
+                                      [checked]="isSkillSelected(skill.id)"
+                                      id="skill-{{skill.id}}">
+                                      
+                                  <label class="form-check-label" for="skill-{{skill.id}}">{{ skill.name }}</label>
+                              </div>
+                          }
+                      </div>
+                  </div>
+              
+                  @if(this.registerForm.get('skillIds')?.invalid){
+                      <div class="text-danger mt-2">
+                          ⚠ Debes seleccionar al menos 5 habilidades.
+                      </div>
+                  }
+              </div>
+      
+              <!-- Experiencias -->
+              <div class="mb-3">
+                  <label for="experienceIds" class="form-label">Experiencias:</label>
+                  <select name="experienceIds" class="form-control" formControlName="experienceIds">
+                      <option value="">Seleccione las Experiencias:</option>
+                      @for(experience of experiences; track experience.id){
+                          <option [value]="experience.id">{{ experience.companyName }}</option>
+                      }
+                  </select>
+              </div>
+      
+              <!-- Botón de Registro -->
+              <div class="text-center">
+                  <button type="submit" class="btn btn-primary px-4" [disabled]="registerForm.invalid">
+                      Registrar
+                  </button>
+              </div>
+          </form>
       </div>
-  
-      <!-- Tecnología utilizada -->
-      <div class="mb-3">
-        <label for="technology" class="form-label">Tecnología</label>
-        <input type="text" id="technology" class="form-control" formControlName="technology" required />
-      </div>
-  
-      <!-- URL del Proyecto -->
-      <div class="mb-3">
-        <label for="url" class="form-label">URL del Proyecto</label>
-        <input type="url" id="url" class="form-control" formControlName="url" required />
-      </div>
-  
-      <!-- Imagen del Proyecto -->
-      <div class="mb-3">
-        <label for="imgUrl" class="form-label">URL de la Imagen</label>
-        <input type="url" id="imgUrl" class="form-control" formControlName="imgUrl" required />
-      </div>
-  
-      <!-- IDs (ejemplo con input simple, puedes mejorarlo con select múltiple) -->
-      <div class="mb-3">
-        <label for="skillIds" class="form-label">Habilidades:</label>
-        <select name="skillIds" class="form-control" formControlName="skillIds">
-          <option value="">Seleciona las habilidades:</option>
-          @for(skill of skills; track skill.id){
-            <option [value]="skill.id">{{ skill.name }}</option>
-          }
-          <!-- <option [value]="0">Prueba</option> -->
-        </select>
-        <!-- <input type="text" id="skillIds" class="form-control" formControlName="skillIds" /> -->
-      </div>
-  
-      <div class="mb-3">
-        <label for="experienceIds" class="form-label">Experiencias:</label>
-        <select name="experienceIds" class="form-control" formControlName="experienceIds">
-          <option value="">Seleccione las Experiencias:</option>
-          @for(experience of experiences; track experience.id){
-            <option [value]="experience.id">{{ experience.companyName }}</option>
-          }
-
-        </select>
-
-      </div>
-
-      <!-- Retirar este apartado de Usuarios no es necesario en la creacion de proyectos remover del backend-->
-  
-      <!-- <div class="mb-3">
-        <label for="userIds" class="form-label">Usuarios (IDs separados por coma)</label>
-        <input type="text" id="userIds" class="form-control" formControlName="userIds" />
-      </div>
-   -->
-      <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Registrar</button>
-    </form>
   </div>
+</div>
+
+
+  <app-footer></app-footer>
   
