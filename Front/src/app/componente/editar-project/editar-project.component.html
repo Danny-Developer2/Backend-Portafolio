@@ -1,90 +1,98 @@
-<div class="container d-flex justify-content-center align-items-center min-vh-100" >
-    <div class="container mt-5" >
-        <div class="d-flex justify-content-end align-items-end position-absolute" style="bottom: 70%; right: 60px; gap: 10px;">
-            <a [href]="['/detail/'+ project.id]" class="btn btn-danger btn-lg" 
-            style="font-family: 'Roboto', sans-serif; font-size: 1.2rem; padding: 5px 20px; border-radius: 50px; transition: 0.3s; 
-            background-color: rgba(222, 46, 184, 0.8); /* Rojo con 80% de opacidad */
-            border: 2px solid rgba(192, 57, 43, 0.8); /* Rojo más oscuro con 80% de opacidad */
-            color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-            text-transform: uppercase; font-weight: bold; text-decoration: none;">
-              <i class="fas fa-arrow-left"></i>
-              <span class="text-white"> Regresar</span>
-         </a>
-         </div>
-        <h2 class="text-center mb-4">Editar Proyecto</h2>
-        @if(project){
-            <div>
-                <form (ngSubmit)="updateProject()">
-                  <div class="form-group">
-                    <label for="name">Nombre:</label>
-                    <input
-                      id="name"
-                      [(ngModel)]="project.name"
-                      name="name"
-                      class="form-control"
-                      required
-                      placeholder="Ingresa el nombre del proyecto"
-                    />
-                  </div>
-            
-                  <div class="form-group">
-                    <label for="description">Descripción:</label>
-                    <textarea
-                      id="description"
-                      [(ngModel)]="project.description"
-                      name="description"
-                      class="form-control"
-                      required
-                      placeholder="Ingresa la descripción del proyecto"
-                    ></textarea>
-                  </div>
-            
-                  <div class="form-group">
-                    <label for="technology">Tecnología:</label>
-                    <input
-                      id="technology"
-                      [(ngModel)]="project.technology"
-                      name="technology"
-                      class="form-control"
-                      required
-                      placeholder="Ingresa las tecnologías utilizadas"
-                    />
-                  </div>
-            
-                  <div class="form-group">
-                    <label for="url">URL:</label>
-                    <input
-                      id="url"
-                      [(ngModel)]="project.url"
-                      name="url"
-                      class="form-control"
-                      placeholder="Ingresa la URL del proyecto"
-                    />
-                  </div>
-            
-                  <div class="form-group">
-                    <label for="imgUrl">Imagen URL:</label>
-                    <input
-                      id="imgUrl"
-                      [(ngModel)]="project.imgUrl"
-                      name="imgUrl"
-                      class="form-control"
-                      placeholder="Ingresa la URL de la imagen del proyecto"
-                    />
-                  </div>
-            
-                  <button type="submit" class="btn btn-primary btn-block">Guardar Cambios</button>
-                </form>
-              </div>
-        }
-       
-       @if(errorMessage){
-        <div  class="mt-3">
-            <p class="alert alert-danger">{{ errorMessage }}</p>
-          </div>
-       }
-        
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card shadow-lg p-4 rounded" style="max-width: 600px; width: 100%;">
+      <div class="d-flex justify-content-end position-relative mb-3">
+          <a [href]="['/detail/'+ project.id]" class="btn btn-danger btn-lg"
+             style="font-family: 'Roboto', sans-serif; font-size: 1rem; padding: 5px 15px; border-radius: 30px; 
+                    transition: 0.3s; background-color: rgba(222, 46, 184, 0.8); 
+                    border: 2px solid rgba(192, 57, 43, 0.8); color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+              <i class="fas fa-arrow-left"></i> <span class="text-white">Regresar</span>
+          </a>
       </div>
+
+      <h2 class="text-center mb-4">Editar Proyecto</h2>
+      
+      @if(project) {
+            <form [formGroup]="projectForm" (ngSubmit)="updateProject()">
+              <div class="form-group mb-3">
+                <label for="name" class="fw-bold">Nombre:</label>
+                <input 
+                  id="name"
+                  formControlName="name"
+                  class="form-control"
+                  placeholder="Ingresa el nombre del proyecto"
+                />
+                @if(projectForm.get('name')?.invalid && projectForm.get('name')?.touched){
+                  <span class="text-danger">El nombre del proyecto es necesario</span>
+                }
+                
+              </div>
+              <div class="form-group mb-3">
+                <label for="descripción" class="fw-bold">Descripcion:</label>
+                <input 
+                  id="description"
+                  formControlName="description"
+                  class="form-control"
+                  placeholder="Ingresa el nombre del proyecto"
+                />
+                @if(projectForm.get('description')?.invalid && projectForm.get('description')?.touched){
+                  <span class="text-danger">La descripcion del proyecto es necesaria</span>
+                }
+                
+              </div>
+              <div class="form-group mb-3">
+                <label for="technology" class="fw-bold">Tecnologia:</label>
+                <input 
+                  id="technology"
+                  formControlName="technology"
+                  class="form-control"
+                  placeholder="Ingresa el nombre del proyecto"
+                />
+                @if(projectForm.get('technology')?.invalid && projectForm.get('technology')?.touched){
+                  <span class="text-danger">La tecnologia del proyecto es necesaria</span>
+                }
+                
+              </div>
+              <div class="form-group mb-3">
+                <label for="url" class="fw-bold">URL:</label>
+                <input 
+                  id="url"
+                  formControlName="url"
+                  class="form-control"
+                  placeholder="Ingresa el nombre del proyecto"
+                />
+                @if(projectForm.get('url')?.invalid && projectForm.get('url')?.touched){
+                  <span class="text-danger">La url del proyecto es necesaria</span>
+                }
+                
+              </div>
+              <div class="form-group mb-3">
+                <label for="imgUrl" class="fw-bold">URL Imagen:</label>
+                <input 
+                  id="imgUrl"
+                  formControlName="imgUrl"
+                  class="form-control"
+                  placeholder="Ingresa el nombre del proyecto"
+                />
+                @if(projectForm.get('imgUrl')?.invalid && projectForm.get('imgUrl')?.touched){
+                  <span class="text-danger">La url de la imagen del proyecto es necesaria</span>
+                }
+                
+              </div>
+            
+            
+
+  
+
+              <button [disabled]="projectForm.invalid"  type="submit" class="btn btn-primary w-100">Guardar Cambios</button>
+            </form>
+      }
+
+      @if(errorMessage) {
+          <div class="mt-3">
+              <p class="alert alert-danger text-center">{{ errorMessage }}</p>
+          </div>
+      }
+  </div>
 </div>
 
-  <app-footer></app-footer>
+

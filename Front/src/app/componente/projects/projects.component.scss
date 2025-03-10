@@ -1,0 +1,410 @@
+/* Contenedor principal */
+.container {
+  max-width: 95%;
+}
+
+/* Diseño de las tarjetas */
+.project-card {
+  background-color: #dfd2d0;
+  min-height: 45vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Imagen dentro de la tarjeta */
+.image-container {
+  background-color: #fffdfc;
+  min-height: 30dvh;
+  padding: 2.1vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+//   .card-img-top {
+//     height: 24vh;
+//     width: 100%;
+//     object-fit: cover;
+//     background-color: #fffdfc;
+//   }
+/* Imagen dentro de la tarjeta */
+.card-img-top {
+  height: 20vh; /* Ajusta la altura de la imagen */
+  width: 100%; /* Asegura que ocupe todo el ancho */
+  object-fit: cover; /* Mantiene la proporción de la imagen sin distorsionarla */
+  object-position: center center; /* Asegura que el centro de la imagen se vea y no se corte */
+  background-color: #fffdfc; /* Fondo blanco */
+}
+
+/* Botones de acción */
+.action-buttons {
+  display: flex;
+  justify-content: end;
+  gap: 5px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.action-buttons .btn {
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+}
+
+.action-buttons .btn i {
+  font-size: 1.8vw;
+}
+
+/* Botones sociales */
+.social-buttons {
+  display: flex;
+  justify-content: end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.social-buttons .btn {
+  border: none;
+}
+
+.social-buttons .btn i {
+  font-size: 2vw;
+  transition: all 0.3s ease-in-out;
+}
+
+.social-buttons .btn:hover i {
+  color: #007bff;
+}
+
+/* Diseño responsive */
+@media (max-width: 1024px) {
+  
+  /* Diseño de las tarjetas */
+  .project-card {
+    background-color: #dfd2d0;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Imagen dentro de la tarjeta */
+  .image-container {
+    background-color: #fffdfc;
+    min-height: 465vh;
+    padding: 2.1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  //   .card-img-top {
+  //     height: 24vh;
+  //     width: 100%;
+  //     object-fit: cover;
+  //     background-color: #fffdfc;
+  //   }
+  /* Imagen dentro de la tarjeta */
+  .card-img-top {
+    height: 24vh; /* Ajusta la altura de la imagen */
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    object-fit: cover; /* Mantiene la proporción de la imagen sin distorsionarla */
+    object-position: center center; /* Asegura que el centro de la imagen se vea y no se corte */
+    background-color: #fffdfc; /* Fondo blanco */
+  }
+
+  /* Botones de acción */
+  .action-buttons {
+    display: flex;
+    justify-content: end;
+    gap: 5px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .action-buttons .btn {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .action-buttons .btn i {
+    font-size: 1.8vw;
+  }
+
+  /* Botones sociales */
+  .social-buttons {
+    display: flex;
+    justify-content: end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .social-buttons .btn {
+    border: none;
+  }
+
+  .social-buttons .btn i {
+    font-size: 2vw;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .social-buttons .btn:hover i {
+    color: #007bff;
+  }
+}
+//diseno 2
+//  * Diseño responsive */
+@media (max-width: 974px) {
+  /* Contenedor principal */
+  .container {
+    max-width: 95%;
+  }
+
+  /* Diseño de las tarjetas */
+  .project-card {
+    background-color: #dfd2d0;
+    min-height: 45vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Imagen dentro de la tarjeta */
+  .image-container {
+    background-color: #fffdfc;
+    min-height: 20vh;
+    padding: 2.1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  //   .card-img-top {
+  //     height: 24vh;
+  //     width: 100%;
+  //     object-fit: cover;
+  //     background-color: #fffdfc;
+  //   }
+  /* Imagen dentro de la tarjeta */
+  .card-img-top {
+    height: 24vh; /* Ajusta la altura de la imagen */
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    object-fit: cover; /* Mantiene la proporción de la imagen sin distorsionarla */
+    object-position: center center; /* Asegura que el centro de la imagen se vea y no se corte */
+    background-color: #fffdfc; /* Fondo blanco */
+  }
+
+  /* Botones de acción */
+  .action-buttons {
+    display: flex;
+    justify-content: end;
+    gap: 5px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .action-buttons .btn {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .action-buttons .btn i {
+    font-size: 1.8vw;
+  }
+
+  /* Botones sociales */
+  .social-buttons {
+    display: flex;
+    justify-content: end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .social-buttons .btn {
+    border: none;
+  }
+
+  .social-buttons .btn i {
+    font-size: 2vw;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .social-buttons .btn:hover i {
+    color: #007bff;
+  }
+}
+
+@media (max-width: 1920px){
+    .image-container {
+        background-color: #fffdfc;
+        min-height: 35vh;
+        padding: 2.1vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card-img-top {
+        height: 26vh; /* Ajusta la altura de la imagen */
+        width: 100%; /* Asegura que ocupe todo el ancho */
+        object-fit: cover; /* Mantiene la proporción de la imagen sin distorsionarla */
+        object-position: center center; /* Asegura que el centro de la imagen se vea y no se corte */
+        background-color: #fffdfc; /* Fondo blanco */
+      }
+
+}
+
+@media (max-width: 375px) {
+  /* Botones sociales */
+  .social-buttons {
+    display: flex;
+    justify-content: end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .social-buttons .btn {
+    border: none;
+  }
+
+  .social-buttons .btn i {
+    font-size: 10vw;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .social-buttons .btn:hover i {
+    color: #007bff;
+  }
+
+  /* Botones de acción */
+  .action-buttons {
+    display: flex;
+    justify-content: end;
+    gap: 5px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .action-buttons .btn {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .action-buttons .btn i {
+    font-size: 7vw;
+  }
+
+  /* Imagen dentro de la tarjeta */
+  .image-container {
+    background-color: #fffdfc;
+    min-height: 10vh;
+    padding: 2.1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  //   .card-img-top {
+  //     height: 24vh;
+  //     width: 100%;
+  //     object-fit: cover;
+  //     background-color: #fffdfc;
+  //   }
+  /* Imagen dentro de la tarjeta */
+  .card-img-top {
+    height: 35vh; /* Ajusta la altura de la imagen */
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    object-fit: cover; /* Mantiene la proporción de la imagen sin distorsionarla */
+    object-position: center center; /* Asegura que el centro de la imagen se vea y no se corte */
+    background-color: #fffdfc; /* Fondo blanco */
+  }
+}
+
+@media (max-width: 768px) {
+    .project-card {
+        background-color: #dfd2d0;
+        min-height: 50vh;
+        min-width: 20vh;
+        display:flexbox;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+  /* Imagen dentro de la tarjeta */
+  .image-container {
+    background-color: #fffdfc;
+    min-height: 30vh;
+    padding: 2.1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  //   .card-img-top {
+  //     height: 24vh;
+  //     width: 100%;
+  //     object-fit: cover;
+  //     background-color: #fffdfc;
+  //   }
+  /* Imagen dentro de la tarjeta */
+  .card-img-top {
+    height: 35vh; /* Ajusta la altura de la imagen */
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    object-fit: cover; /* Mantiene la proporción de la imagen sin distorsionarla */
+    object-position: center center; /* Asegura que el centro de la imagen se vea y no se corte */
+    background-color: #fffdfc; /* Fondo blanco */
+  }
+
+  /* Botones sociales */
+  .social-buttons {
+    display: flex;
+    justify-content: end;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .social-buttons .btn {
+    border: none;
+  }
+
+  .social-buttons .btn i {
+    font-size: 4vw;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .social-buttons .btn:hover i {
+    color: #007bff;
+  }
+
+  /* Botones de acción */
+  .action-buttons {
+    display: flex;
+    justify-content: end;
+    gap: 5px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .action-buttons .btn {
+    padding: 3px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .action-buttons .btn i {
+    font-size: 4vw;
+  }
+}

@@ -7,21 +7,34 @@ import { RegisterComponent } from './componente/register/register.component';
 import { DashboardComponent } from './componente/dashboard/dashboard.component';
 import { DetailProjectComponent } from './componente/detail-project/detail-project.component';
 import { EditarProjectComponent } from './componente/editar-project/editar-project.component';
+import { ProjectsComponent } from './componente/projects/projects.component';
+import { TablaSkillsComponent } from './componente/tabla-skills/tabla-skills.component';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },
-    { path: 'register-projects', component: RegisterProjectComponent }, 
-    { path: 'register', component: RegisterComponent },  // Ruta para registrar un nuevo proyecto
-    { path: 'dashboard', component: DashboardComponent }, // Ruta para el dashboard del usuario logueado
-    { path: 'detail/:id', component: DetailProjectComponent }, // Ruta para desloguearse del usuario logueado. Este componente se encarga de borrar el token en local storage y redirigir al login.
-    { path: 'edit/:id', component: EditarProjectComponent }, // Ruta para desloguearse del usuario logueado. Este componente se encarga de borrar el token en local storage y redirigir al login.
+    { path: 'register-projects', component: RegisterProjectComponent },
+    { path: 'register', component: RegisterComponent },
     { path: 'login', component: LoginComponent },
-    { path: '**', redirectTo: '' }  // Si la ruta no existe, redirige al inicio
+    { path: 'detail/:id', component: DetailProjectComponent },
+    { path: 'edit/:id', component: EditarProjectComponent },
+
+    // **Dashboard con rutas anidadas**
+    {
+        path: 'dashboard',
+        component: DashboardComponent,
+        children: [
+            { path: 'projects', component: ProjectsComponent }, // Página de proyectos
+            { path: 'skills', component: TablaSkillsComponent }, // Editar proyecto dentro del dashboard
+            { path: 'detail/:id', component: DetailProjectComponent }, // Detalle de proyecto dentro del dashboard
+            // { path: '', redirectTo: 'projects', pathMatch: 'full' }  // Redirección por defecto a 'projects'
+        ]
+    },
+
+    { path: '**', redirectTo: '' }  // Redirección si la ruta no existe
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],  // Configura las rutas en la aplicación
-    exports: [RouterModule]  // Exporta RouterModule para que pueda ser utilizado en otros módulos
-    
+    imports: [RouterModule.forRoot(routes)], 
+    exports: [RouterModule] 
 })
 export class AppRoutingModule { }

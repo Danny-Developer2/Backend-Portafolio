@@ -6,7 +6,7 @@ import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule,FooterComponent],
+  imports: [ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })

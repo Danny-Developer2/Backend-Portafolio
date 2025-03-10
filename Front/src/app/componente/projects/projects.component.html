@@ -1,37 +1,4 @@
-<div>
-  <section class="container mt-5">
-    <div class="row align-items-center">
-      <!-- Texto a la izquierda -->
-      <div class="col-lg-6" style="font-family: 'Roboto', sans-serif; text-align: center; padding: 50px;  border-radius: 10px; margin-left: 90px;">
-        <h1 style="color: #333; font-size: 3rem; font-weight: bold;">Soy Juan Luevano Ruiz</h1>
-        <p style="color: #555; font-size: 1.2rem; font-weight: 500;">Desarrollador Backend .Net</p>
-        <button class="btn btn-secondary" style="font-size: 1.1rem; padding: 10px 20px; width: 300px; background-color: D9D9D9;">Descargar CV</button>
-      </div>
-      
-  
-      <!-- Imagen a la derecha -->
-      <div class="col-lg-5 text-center margin-left: 40px;">
-        <img [src]="'images/photo.png'" alt="Foto Juan" class="img-fluid" />
-      </div>
-    </div>
-  </section>
-  <section class="container mt-5">
-    <div class="row align-items-center">
-      <!-- Tu contenido aquí -->
-  
-      <!-- Listado de habilidades -->
-       <!-- TODO Listado de habilidades-->
-      <h2 class="img-fluid text-center">Desarrollador Backend y Front End</h2>
-      <img
-        [src]="'images/section2.png'"
-        alt="Backend Developer Imagen"
-        class="img-fluid w-100 d-block mx-auto  "
-        style="height: 100dvh; object-fit: cover;"
-        
-      />
-    </div>
-  </section>
-  <section class="container mt-5">
+<section class="container mt-5">
     <h2 class="text-center">Proyectos Realizados</h2>
 
     @if (displayedProjects.length > 0) {
@@ -102,31 +69,3 @@
       <p class="text-center text-muted">No hay proyectos disponibles.</p>
     }
 </section>
-
-  
-  
-  
-  
-  <section class="container my-5">
-    <div class="row align-items-center">
-      <!-- Imagen a la izquierda -->
-      <div class="col-lg-6 text-center">
-        <img [src]="'images/profile.png'" alt="Foto de Juan Luevano" class="img-fluid rounded">
-      </div>
-  
-      <!-- Texto a la derecha -->
-      <div class="col-lg-6">
-        <h2 class="mb-3">Sobre mí</h2>
-        <p>
-          Soy Juan Luevano Ruiz, un apasionado desarrollador Backend especializado en .NET.  
-          Me encanta crear soluciones eficientes y escalables para resolver problemas del mundo real.  
-          Con varios años de experiencia, disfruto trabajar con tecnologías modernas y aprender constantemente.
-        </p>
-        <button class="btn btn-primary">Ver más</button>
-      </div>
-    </div>
-  </section>
-  
-</div>
-
-

@@ -1,0 +1,166 @@
+/* Estilo del botón */
+button {
+    position: fixed; /* Lo fija en la pantalla */
+    top: 20px; /* Ajusta la distancia desde la parte superior */
+    left: 20px; /* Ajusta la distancia desde el lado izquierdo */
+    z-index: 999;
+    padding: 10px;
+    border-radius: 50%; /* Hace el botón redondeado */
+    background-color: #007bff; /* Color de fondo */
+    color: white; /* Color del icono */
+    border: none;
+    font-size: 1.5rem; /* Tamaño del icono */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    transition: all 0.3s ease; /* Efecto de transición suave */
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Color cuando pasa el mouse */
+    cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+    transform: scale(1.1); /* Efecto de zoom suave */
+  }
+  
+  button:focus {
+    outline: none; /* Elimina el borde de enfoque */
+  }
+  
+  .button-sidebar {
+    position: fixed;
+    top: 30px;
+    left: 20px;
+    z-index: 999;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: transparent;
+    color: black;
+    border: none;
+  }
+  
+  /* Sidebar normal */
+  .sidebar {
+    transition: width 0.3s ease;
+    width: 310px; /* Ancho cuando está visible */
+    padding-top: 20px;
+  }
+  
+  .sidebar.hidden {
+    width: 5000px; /* Ancho cuando está oculto */
+  }
+  
+  /* Iconos de la barra lateral */
+  .sidebar i {
+    font-size: 1rem; /* Tamaño de los iconos */
+  }
+  
+  /* Texto de los elementos en la barra lateral */
+  .sidebar span {
+    display: inline; /* El texto será visible solo cuando no esté oculto */
+    transition: opacity 0.3s ease;
+    font-size: 15px;
+  }
+  
+  .sidebar h4 {
+    font-size: 15px;
+    margin-left: 40px;
+  }
+  
+  .sidebar.hidden span {
+    opacity: 0; /* Oculta el texto cuando está oculto */
+    visibility: hidden;
+  }
+  
+  /* El contenido se ajusta para dejar espacio cuando la barra lateral está visible */
+  .content {
+    margin-left: 1px; /* Espacio normal cuando la barra lateral está visible */
+    transition: margin-left 0.3s ease;
+  }
+  
+  .sidebar.hidden ~ .content {
+    margin-left: 60px; /* Reduce el espacio cuando la barra lateral está oculta */
+  }
+  
+  /* Animación de la barra lateral */
+  .sidebar {
+    transition: all 0.2s ease;
+  }
+  
+  .sidebar.hidden {
+    width: 100px;
+  }
+  
+  .sidebar.hidden i {
+    font-size: 1rem; /* Tamaño de los iconos cuando el sidebar está oculto */
+  }
+  
+  @media (max-width: 768px) {
+    .sidebar span {
+      display: none; /* El texto será invisible y solo se verán los iconos */
+    }
+  
+    .sidebar {
+      width: 100px; /* El sidebar será de solo 100px en pantallas pequeñas */
+      padding-top: 20px;
+    }
+  
+    .sidebar.hidden {
+      width: 100px; /* Se mantiene el tamaño cuando el sidebar está oculto */
+    }
+  
+    /* El contenido se ajusta para dejar espacio cuando la barra lateral está visible */
+    .content {
+      margin-left: 0px; /* Espacio ajustado cuando solo se muestran los iconos */
+    }
+  
+    .button-sidebar {
+      display: none; /* Oculta el botón de la barra lateral en pantallas pequeñas */
+    }
+    .nav h4 {
+        display: none;
+    }
+
+    
+      .s {
+        display: none; /* Oculta el sidebar en pantallas pequeñas */
+    }
+    .ul {
+        position: fixed;
+        top: 10%;
+    }
+    
+  }
+  
+  @media (max-width: 375px) {
+    /* En pantallas menores de 374px */
+    .sidebar {
+      display: none;
+    }
+    
+    .sidebar.hidden {
+      width: 60px; /* Sigue siendo de 60px cuando está oculto */
+    }
+  
+    .sidebar i {
+      font-size: 1.2rem; /* Ajusta el tamaño de los iconos */
+    }
+  
+    .sidebar span {
+      display: none; /* No muestra el texto en pantallas pequeñas */
+    }
+  
+    .content {
+      margin-left: 60px; /* Ajusta el espacio del contenido para pantallas pequeñas */
+    }
+
+    .s {
+        display: none; /* Oculta el sidebar en pantallas pequeñas */
+    }
+    .nav h4 {
+        display: none;
+    }
+
+    .content {
+        margin-left: 1px; /* Espacio ajustado cuando solo se muestran los iconos */
+      }
+    
+  }
+  

@@ -9,7 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 @Component({
   selector: 'app-detail-project',
   imports: [
-    FooterComponent,CommonModule
+    CommonModule
   ],
   templateUrl: './detail-project.component.html',
   styleUrl: './detail-project.component.scss'

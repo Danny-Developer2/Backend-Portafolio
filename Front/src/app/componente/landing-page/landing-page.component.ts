@@ -11,7 +11,7 @@ import { ImageValidateUrlService } from '../../services/image-validate-url.servi
 @Component({
   selector: 'app-landing-page',
   imports: [
-    FooterComponent,RouterLink
+    RouterLink
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss'

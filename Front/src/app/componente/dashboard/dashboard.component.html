@@ -1,28 +1,50 @@
-<div class="d-flex vh-100">
-    <!-- Sidebar (Menú Lateral) -->
-    <nav class="sidebar bg-white text-dark p-3">
-      <h4 class="text-center">Dashboard</h4>
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a class="nav-link text-dark" [routerLink]="['/home']">🏠 Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" [routerLink]="['/profile']">👤 Perfil</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" [routerLink]="['/settings']">⚙️ Configuración</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" [routerLink]="['/reports']">📊 Reportes</a>
-        </li>
-      </ul>
-    </nav>
+<div class="d-flex">
+  <!-- Botón para ocultar/mostrar la barra lateral -->
+ 
   
-    <!-- Contenido Principal -->
-    <div class="content p-4 flex-grow-1">
-      <h2>Bienvenido al Dashboard</h2>
-      <p>Aquí va el contenido de tu aplicación.</p>
-    </div>
+  <!-- Sidebar (Menú Lateral) -->
+  <nav class="sidebar bg-white text-dark p-3" [class.hidden]="isSidebarHidden">
+    <a  class="s btn btn-outline-none" (click)="toggleSidebar()">
+      <i class="fas fa-bars" style="font-size: 1.5rem;"></i>
+    </a>
+    <ul class="nav flex-column">
+      @if(!isSidebarHidden){<h4>Dashboard</h4>}
+      <li class="nav-item">
+        <a class="nav-link text-dark" [routerLink]="['/dashboard/skills']">
+          <i class="fas fa-table"></i> <!-- Icono de la tabla -->
+          @if(!isSidebarHidden){ <span> Tabla Skills</span>}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-dark" [routerLink]="['/dashboard/profile']">
+          <i class="fas fa-user"></i> <!-- Icono de usuario -->
+          @if(!isSidebarHidden){<span> Users</span>}
+          
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-dark" [routerLink]="['/dashboard/settings']">
+          <i class="fas fa-cogs"></i> <!-- Icono de configuración -->
+          @if(!isSidebarHidden){ <span> Tabla Roles</span>}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-dark" [routerLink]="['/dashboard/experiences']">
+          <i class="fas fa-chart-line"></i> <!-- Icono de experiencia -->
+          @if(!isSidebarHidden){<span> Tabla Experiencias</span>}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-dark" [routerLink]="['/dashboard/projects']">
+          <i class="fas fa-project-diagram"></i> <!-- Icono de proyectos -->
+          @if(!isSidebarHidden){<span> Tabla de Proyectos</span>}
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Contenido Principal donde se renderizan las rutas -->
+  <div class="content p-5 flex-grow-1" style="overflow-y: auto; height: 100dvh;">
+    <router-outlet></router-outlet>  <!-- Aquí se mostrarán las vistas dinámicamente -->
   </div>
-  
-<app-footer></app-footer>
+</div>
