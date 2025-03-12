@@ -29,6 +29,10 @@ namespace API.Data
 
         public DbSet<ProyectSkill> ProjectSkills { get; set; }
 
+        public DbSet<ActiveSession> ActiveSessions { get; set; }
+
+        
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
