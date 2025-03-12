@@ -57,15 +57,15 @@ export class ProjectsService {
   
 
   getProjects(): Observable<Project[]> {
-    const token = localStorage.getItem('token'); // Obtener el token del localStorage
+    const data = localStorage.getItem('data'); // Obtener el token del localStorage
 
-    if (!token) {
+    if (!data) {
       console.error('No se encontró el token en el localStorage.');
       return new Observable(); // Devuelve un observable vacío para evitar errores
     }
 
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
+      'Authorization': `Bearer ${data}`,
       'Content-Type': 'application/json'
     });
 

@@ -8,10 +8,11 @@ using API.Errors;
 using API.DTOs;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
-using API.Interfaces;  // Asegúrate de incluir el espacio de nombres para ApiException
+using API.Interfaces;
+using Microsoft.AspNetCore.Authorization;  // Asegúrate de incluir el espacio de nombres para ApiException
 
 namespace API.Controllers
-{
+{   [Authorize] 
     [ApiController]
     [Route("api/[controller]")]
    
@@ -26,6 +27,7 @@ namespace API.Controllers
         }
 
         // Obtener usuario por ID
+       
         [HttpGet("by-id")]
         public async Task<ActionResult<AppUser>> GetUserById(int id)
         {

@@ -13,15 +13,20 @@ using API.DTO;  // Asegúrate de incluir el espacio de nombres para ApiException
 
 namespace API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ProjectsController : ControllerBase
     {
         private readonly DataContext _context;
 
+        
+
         public ProjectsController(DataContext context)
         {
             _context = context;
+
+            
         }
 
         // Obtener todos los proyectos
@@ -119,7 +124,7 @@ namespace API.Controllers
 
 
         // Obtener un proyecto por ID
-        [Authorize(Roles = "User,Admin")]
+
         [HttpGet("{id}")]
         public async Task<ActionResult<AppProyect>> GetProjectById(int id)
         {
@@ -185,10 +190,10 @@ namespace API.Controllers
 
 
         // Crear un nuevo proyecto
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,User")]
 
         [HttpPost]
-        public async Task<ActionResult<AppProyect>> CreateProject(ProyectDTO newProject)
+        public async Task<ActionResult<AppProyect>> CreateProject(ProyectDTO newProject )
         {
             if (newProject == null || string.IsNullOrWhiteSpace(newProject.Name) || string.IsNullOrWhiteSpace(newProject.Description))
             {
@@ -197,6 +202,9 @@ namespace API.Controllers
 
             try
             {
+               
+                
+                
                 // Obtener el email del usuario desde el token
                 var userEmail = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (string.IsNullOrEmpty(userEmail))
@@ -299,7 +307,7 @@ namespace API.Controllers
 
 
         // Actualizar un proyecto existente
-        // [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProject(int id, ProyectDTO updatedProject)
         {
@@ -346,7 +354,7 @@ namespace API.Controllers
         }
 
         // Eliminar un proyecto
-        // [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(int id)
         {

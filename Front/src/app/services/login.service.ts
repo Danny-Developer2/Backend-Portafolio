@@ -23,7 +23,7 @@ export class LoginService {
     const body = { email, password };
 
     // Realiza la solicitud POST
-    return this.http.post(this.baseUrl, body);
+    return this.http.post(this.baseUrl, body,{ withCredentials: true });
   }
 
   isTokenExpired(): boolean {
@@ -35,8 +35,8 @@ export class LoginService {
   }
 
   logout(){
-    sessionStorage.removeItem('token'); // Elimina el token de sesión
-    localStorage.removeItem('token'); // Elimina el token de localStorage
+    sessionStorage.removeItem('expirationTime'); // Elimina el token de sesión
+    localStorage.removeItem('data'); // Elimina el token de localStorage
     localStorage.removeItem('expirationTime');
     this.router.navigate(['/']); // Redirige al login
   }
@@ -45,5 +45,10 @@ export class LoginService {
     return this.isTokenExpired();
     
   }
+
+  usuarioLogeado(): boolean {
+    return !!localStorage.getItem('data'); // Retorna true si hay un usuario, false si no
+  }
+
   
 }

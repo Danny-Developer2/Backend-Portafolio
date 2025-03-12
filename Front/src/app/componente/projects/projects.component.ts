@@ -18,7 +18,7 @@ export class ProjectsComponent implements OnInit {
       projects: Project[] = [];
       displayedProjects: Project[] = []; // Proyectos visibles en la página actual
       currentPage: number = 1; 
-      projectsPerPage: number = 4; // Número de proyectos por página
+      projectsPerPage: number = 3; // Número de proyectos por página
       paginasTotal: number = 1; //
       token: string | null = null;
       role: string = '';

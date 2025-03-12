@@ -9,65 +9,78 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using API.Interfaces;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuración para los controladores y la serialización JSON
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
 });
 
-
+// Configuración de JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
+var secretKeyString = jwtSettings["SecretKey"];
+var secretKey = Encoding.UTF8.GetBytes(secretKeyString!);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(secretKey),
-            ValidateIssuer = true,
-            ValidIssuer = jwtSettings["Issuer"],
-            ValidateAudience = true,
-            ValidAudience = jwtSettings["Audience"],
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero
-        };
-    });
-builder.Services.AddAuthorization(options =>
+// Configuración de autenticación con JWT
+builder.Services.AddAuthentication(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin","User"));
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var token = context.Request.Cookies["auth_token"];
+            if (!string.IsNullOrEmpty(token))
+            {
+                context.Token = token;
+            }
+            return Task.CompletedTask;
+        }
+    };
+
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+        ValidateIssuer = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidateAudience = true,
+        ValidAudience = jwtSettings["Audience"],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
 });
 
-
-
-// Configurar la conexión a la base de datos
-
+// Configuración de la base de datos
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-
+// Servicios adicionales
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
         policy =>
         {
-            policy.WithOrigins("https://192.168.100.12:4200") // Cambia esto según tu frontend
+            policy.WithOrigins("https://192.168.100.12:4200", "https://localhost:4200","https://localhost:4200","wss://192.168.100.12:4200/","http://localhost:4200") // Cambia según tu frontend
                   .AllowAnyMethod()
                   .AllowAnyHeader()
                   .AllowCredentials(); // Si usas autenticación con cookies o tokens
         });
 });
 
+// Repositorios
 builder.Services.AddScoped<ExperienceRepository, ExperienceRepository>();
+builder.Services.AddScoped<SkillRepository, SkillRepository>();
+builder.Services.AddScoped<UserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddScoped<SkillRepository,SkillRepository>();
-
-// Agregar servicios de Swagger
+// Configuración de Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -79,26 +92,19 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Agregar el servicio de controladores
-builder.Services.AddControllers();  // Aquí se agrega AddControllers
+builder.Services.AddControllers(); // Para agregar servicios de controladores
 
-// Agregar autorización (si es necesario)
+// Configuración de la autorización
 builder.Services.AddAuthorization();
-
-builder.Services.AddScoped<UserRepository, UserRepository>();
-
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-
-
 
 var app = builder.Build();
 
 app.UseCors("AllowSpecificOrigin");
 
-app.UseExceptionMiddleware(); 
+// Middleware de excepciones personalizadas
+app.UseExceptionMiddleware();
 
-// Habilitar Swagger y la UI de Swagger en Desarrollo
+// Habilitar Swagger en desarrollo
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -109,7 +115,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseAuthentication();  // Asegúrate de usar la autenticación antes de la autorización
+app.UseAuthorization();   // Llamada a UseAuthorization una sola vez
+
 app.UseHttpsRedirection();
-app.UseAuthorization();  // Habilitar autorización (si es necesario)
-app.MapControllers();    // Mapear controladores
+app.MapControllers();    // Mapea los controladores
 app.Run();

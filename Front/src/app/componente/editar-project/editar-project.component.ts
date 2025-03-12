@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { FooterComponent } from '../footer/footer.component';
+import { ValidateTokenService } from '../../services/validate-token.service';
 
 @Component({
   selector: 'app-editar-project',
@@ -17,13 +18,15 @@ export class EditarProjectComponent implements OnInit {
   id: number = 0;
   errorMessage: string = '';
   projectForm: FormGroup;
+  token: string | null=null;
 
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectsService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private vT: ValidateTokenService
   ) {
     this.projectForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -71,30 +74,60 @@ export class EditarProjectComponent implements OnInit {
       this.errorMessage = 'Por favor, corrige los errores de validación.';
       return;
     }
-
-    const formData = {
-      id: this.id,
-      ...this.projectForm.value
-    };
-
-    this.projectService.updateProject(this.id, formData).subscribe(
-      (isSuccess) => {
-        if (isSuccess) {
-          this.toastr.success('Proyecto actualizado con éxito', '', {
-            timeOut: 5000,
-            positionClass: 'toast-top-right',
-          });
-          this.router.navigate(['/']);
-        } else {
-          this.toastr.error('Error al actualizar el proyecto', '', {
-            timeOut: 5000,
-            positionClass: 'toast-top-right',
-          });
-        }
+  
+    this.token = localStorage.getItem('token');
+    if (!this.token) {
+      this.toastr.error('No se encontró un token de autenticación');
+      return;
+    }
+  
+    // Verificar el token antes de actualizar el proyecto
+    this.vT.verifyToken(this.token!).subscribe(
+      (response) => {  // ✅ Manejo de la respuesta exitosa
+        
+  
+        // ✅ Si el token es válido, proceder con la actualización
+        const formData = {
+          id: this.id,
+          ...this.projectForm.value
+        };
+  
+        this.projectService.updateProject(this.id, formData).subscribe(
+          (isSuccess) => {
+            if (isSuccess) {
+              this.toastr.success('Proyecto actualizado con éxito', '', {
+                timeOut: 5000,
+                positionClass: 'toast-top-right',
+              });
+              this.router.navigate(['/']);
+            } else {
+              this.toastr.error('Error al actualizar el proyecto', '', {
+                timeOut: 5000,
+                positionClass: 'toast-top-right',
+              });
+            }
+          },
+          (error) => {
+            console.error('Error al actualizar el proyecto:', error);
+            this.toastr.error('Hubo un error inesperado al actualizar el proyecto.');
+          }
+        );
       },
-      (error) => {
-        console.error('Error al actualizar el proyecto:', error);
+      (error) => {  // ✅ Manejo de errores en la verificación del token
+        console.error('Error verificando el token:', error);
+        if (error.status === 401) {
+          localStorage.removeItem('token');
+          this.toastr.error('Token expirado. Vuelve a iniciar sesión.', '', {
+            timeOut: 4000,
+            positionClass: 'toast-top-right',
+          });
+          this.router.navigate(['/auth/login']);
+        } else {
+          this.toastr.error('Error al verificar el token.');
+        }
       }
     );
   }
+  
+  
 }

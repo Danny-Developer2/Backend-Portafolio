@@ -35,12 +35,12 @@ export class LoginComponent {
   onLogin() {
     this.loginService.login(this.email, this.password).subscribe({
       next: (response) => {
-        // Si el login es exitoso, almacenas el token y rediriges
-        localStorage.setItem('token', response.token); // Asumiendo que el backend retorna un token
-        sessionStorage.setItem('token', response.token);
-        const token = localStorage.getItem('token');
-        const timeExptoken =  this.setExpToken.setExpToken(token!)
+        console.log(response);
+        localStorage.setItem('data',response.data);
+        const data = localStorage.getItem('data');
+        const timeExptoken =  this.setExpToken.setExpToken(data!)
         localStorage.setItem('expirationTime', timeExptoken)
+        sessionStorage.setItem('expirationTime', timeExptoken)
         this.toastr.success('Login exitoso', 'Bienvenido!', {
           timeOut: 5000,
           positionClass: 'toast-top-right',

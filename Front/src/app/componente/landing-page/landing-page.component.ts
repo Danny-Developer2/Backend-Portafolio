@@ -6,13 +6,15 @@ import { LoginService } from '../../services/login.service';
 import { Router, RouterLink } from '@angular/router';
 import { RoleUser } from '../../services/role-user.service';
 import { ImageValidateUrlService } from '../../services/image-validate-url.service';
+import { ProjectsComponent } from "../projects/projects.component";
 
 
 @Component({
   selector: 'app-landing-page',
   imports: [
-    RouterLink
-  ],
+    ProjectsComponent,
+    ProjectsComponent
+],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss'
 })

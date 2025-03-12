@@ -11,7 +11,7 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;  // Asegúrate de incluir el espacio de nombres para ApiException
 
 namespace API.Controllers
-{
+{   [Authorize] 
     [ApiController]
     [Route("api/[controller]")]
     public class ExperienceController : ControllerBase
@@ -27,7 +27,7 @@ namespace API.Controllers
         }
 
         // Obtener todas las experiencias
-        [Authorize(Roles = "User,Admin")]
+        // [Authorize(Roles = "User,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppExperience>>> GetExperiences()
         {
@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
         // Crear una nueva experiencia
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Admin")]
         [HttpPost]
         public async Task<ActionResult<AppExperience>> CreateExperience(ExperienceDTO newExperience)
         {
@@ -87,7 +87,7 @@ namespace API.Controllers
         }
 
         // Obtener una experiencia por su ID
-        [Authorize(Roles = "User")]
+        // [Authorize(Roles = "User")]
         [HttpGet("by-id")]
         public async Task<ActionResult<AppExperience>> GetExperienceById([FromQuery]int id)
         {
@@ -112,7 +112,7 @@ namespace API.Controllers
         }
 
         // Actualizar una experiencia
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("by-id")]
         public async Task<IActionResult> UpdateExperience([FromQuery]int id, ExperienceDTO updatedExperience)
         {
@@ -157,7 +157,7 @@ namespace API.Controllers
         }
 
         // Eliminar una experiencia
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("by-id")]
         public async Task<IActionResult> DeleteExperience([FromQuery]int id)
         {

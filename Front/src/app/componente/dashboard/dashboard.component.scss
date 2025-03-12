@@ -71,12 +71,13 @@ button {
   
   /* El contenido se ajusta para dejar espacio cuando la barra lateral está visible */
   .content {
-    margin-left: 1px; /* Espacio normal cuando la barra lateral está visible */
+    padding: 0;
+    margin-left: 0px; /* Espacio normal cuando la barra lateral está visible */
     transition: margin-left 0.3s ease;
   }
   
   .sidebar.hidden ~ .content {
-    margin-left: 60px; /* Reduce el espacio cuando la barra lateral está oculta */
+    margin-left: 0px; /* Reduce el espacio cuando la barra lateral está oculta */
   }
   
   /* Animación de la barra lateral */
@@ -98,8 +99,7 @@ button {
     }
   
     .sidebar {
-      width: 100px; /* El sidebar será de solo 100px en pantallas pequeñas */
-      padding-top: 20px;
+      display: none;
     }
   
     .sidebar.hidden {
@@ -148,7 +148,7 @@ button {
     }
   
     .content {
-      margin-left: 60px; /* Ajusta el espacio del contenido para pantallas pequeñas */
+      margin-left: 0px; /* Ajusta el espacio del contenido para pantallas pequeñas */
     }
 
     .s {
@@ -158,9 +158,9 @@ button {
         display: none;
     }
 
-    .content {
-        margin-left: 1px; /* Espacio ajustado cuando solo se muestran los iconos */
-      }
+    // .content {
+    //     margin-left: 1px; /* Espacio ajustado cuando solo se muestran los iconos */
+    //   }
     
   }
   

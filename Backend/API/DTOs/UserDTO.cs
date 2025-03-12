@@ -24,6 +24,8 @@ namespace API.DTO
 
         public string? Token { get; set; } 
 
+        public string? Data{ get; set; }
+
         // IDs de habilidades relacionadas
         public List<int>? SkillIds { get; set; }
         public List<ExperienceDTO> Experiences { get; set; }  = new List<ExperienceDTO>();

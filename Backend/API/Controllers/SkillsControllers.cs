@@ -8,7 +8,7 @@ using API.Errors;
 using Microsoft.AspNetCore.Authorization;  // Asegúrate de incluir el espacio de nombres para ApiException
 
 namespace API.Controllers
-{
+{   [Authorize] 
     [ApiController]
     [Route("api/[controller]")]
     public class SkillsController : ControllerBase
@@ -22,7 +22,7 @@ namespace API.Controllers
         }
 
         // Obtener todas las habilidades
-        [Authorize(Roles = "User,Admin")]
+        // [Authorize(Roles = "User,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppSkill>>> GetSkills()
         {
@@ -38,7 +38,7 @@ namespace API.Controllers
         }
 
         // Crear una nueva habilidad
-        [Authorize(Roles = "User")]
+        
         [HttpPost]
         public async Task<ActionResult<AppSkill>> CreateSkill(SkillsDTO skillsDTO)
         {
@@ -69,7 +69,7 @@ namespace API.Controllers
         }
 
         // Obtener una habilidad por su ID
-        [Authorize(Roles = "User")]
+        
         [HttpGet("by-id")]
         public async Task<ActionResult<AppSkill>> GetSkillById([FromQuery]int id)
         {
@@ -95,7 +95,7 @@ namespace API.Controllers
         }
 
         // Actualizar una habilidad existente
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSkill(int id, SkillsDTO skillsDTO)
         {
@@ -139,7 +139,7 @@ namespace API.Controllers
         }
 
         // Eliminar una habilidad
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("by-id")]
         public async Task<IActionResult> DeleteSkill([FromQuery]int id)
         {

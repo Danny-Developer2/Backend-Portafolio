@@ -29,7 +29,7 @@ export class GetExperiencesService {
   constructor() {}
 
   getExperiences(): Observable<Experiences[]> {
-    const token = localStorage.getItem('token'); // Obtener el token del localStorage
+    const token = localStorage.getItem('data'); // Obtener el token del localStorage
 
     if (!token) {
       console.error('No se encontró el token en el localStorage.');

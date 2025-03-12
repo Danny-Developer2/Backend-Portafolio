@@ -4,6 +4,10 @@ import { RegisterProjectsService } from '../../services/registerProjets.service'
 import { GetSkillsService, Skills } from '../../services/get-skills.service';
 import {Experiences, GetExperiencesService} from '../../services/get-experiences.service';
 import { FooterComponent } from '../footer/footer.component';
+import { ValidateTokenService } from '../../services/validate-token.service';
+import { ToastrService } from 'ngx-toastr';
+import { timeout } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -22,7 +26,7 @@ export class RegisterProjectComponent {
 
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private registerService: RegisterProjectsService, private getSkillsService:GetSkillsService, private getExperiencesService:GetExperiencesService) {
+  constructor(private fb: FormBuilder, private registerService: RegisterProjectsService, private getSkillsService:GetSkillsService, private getExperiencesService:GetExperiencesService, private vT:ValidateTokenService,private toastr: ToastrService,private router:Router) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -39,11 +43,30 @@ export class RegisterProjectComponent {
     this.getSkills(); // Llamar al método para obtener las habilidades al cargar el componente
     this.getExperiences(); // Llamar al método para obtener las experiencias al cargar el componente
   }
-  onSubmit() {
+ 
+ 
 
-    if (this.registerForm.valid) {
+// Método onSubmit
+onSubmit() {
+  // Primero verificar si el formulario es válido
+  if (this.registerForm.invalid) {
+    this.toastr.error('Por favor, complete todos los campos correctamente.');
+    return;  // Detener la ejecución si el formulario es inválido
+  }
 
-      // Convertir los valores de string a arrays numéricos
+  // Obtener el token desde el localStorage
+  this.token = localStorage.getItem('data');
+  if (!this.token) {
+    this.toastr.error('No se encontró un token de autenticación');
+    return;  // Detener la ejecución si no se encontró el token
+  }
+
+  // Verificar la validez del token antes de enviar la solicitud
+  this.vT.verifyToken(this.token!).subscribe(
+    (response) => {  // ✅ Manejo de la respuesta exitosa
+    
+  
+      // ✅ Si el token es válido, proceder con la creación del proyecto
       const formData = {
         id: Math.floor(Math.random() * 1000), // Generar un ID temporal
         ...this.registerForm.value,
@@ -51,25 +74,37 @@ export class RegisterProjectComponent {
         experienceIds: this.convertToArray(this.registerForm.value.experienceIds),
         userIds: this.convertToArray(this.registerForm.value.userIds)
       };
-      this.token = localStorage.getItem('token')
-      if (!this.token) {
-        alert('No se encontró un token de autenticación');
-        return;
-      }
-      this.registerService.registerProject(formData,this.token!).subscribe(
-        response => {
+  
+      this.registerService.registerProject(formData, this.token!).subscribe(
+        (response) => {  // ✅ Manejo de éxito en la creación del proyecto
           console.log('Proyecto registrado:', response);
-          alert('Proyecto registrado con éxito!');
+          this.toastr.success('Proyecto registrado con éxito!');
           this.registerForm.reset();
-          this.skillsSelected = []; // Resetear los seleccionados de habilidades
+          this.skillsSelected = [];  // Resetear los seleccionados de habilidades
         },
-        error => {
+        (error) => {  // ✅ Manejo de error en la creación del proyecto
           console.error('Error al registrar el proyecto:', error);
-          alert('Hubo un error al registrar el proyecto');
+          this.toastr.error('Hubo un error al registrar el proyecto.');
         }
       );
+    },
+    (error) => {  // ✅ Manejo de errores en la verificación del token
+      console.error('Error verificando el token:', error);
+      if (error.status === 401) {
+        localStorage.removeItem('token');
+        this.toastr.error('Token expirado. Vuelve a iniciar sesión.', '', {
+          timeOut: 4000,
+          positionClass: 'toast-top-right',
+        });
+        this.router.navigate(['/auth/login']);
+      } else {
+        this.toastr.error('Error al verificar el token.');
+      }
     }
-  }
+  );
+  
+}
+
 
   private convertToArray(value: string): number[] {
     return value ? value.split(',').map(Number).filter(num => !isNaN(num)) : [];

@@ -19,6 +19,7 @@ export class RegisterService {
   
     // Método para registrar un nuevo proyecto
     registerUser(project: any): Observable<any> {
+
       return this.http.post<any>(this.apiUrl, project);
 }
 }
