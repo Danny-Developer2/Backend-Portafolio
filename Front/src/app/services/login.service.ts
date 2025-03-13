@@ -12,7 +12,8 @@ export class LoginService {
   private http = inject(HttpClient);
   private router: Router = new Router();
 
-  baseUrl = `${environment.apiUrl}Auth/login`;
+  baseUrl = `${environment.apiUrl}`;
+  
 
 
   constructor() { }
@@ -23,7 +24,7 @@ export class LoginService {
     const body = { email, password };
 
     // Realiza la solicitud POST
-    return this.http.post(this.baseUrl, body,{ withCredentials: true });
+    return this.http.post(`${this.baseUrl}Auth/login`, body,{ withCredentials: true });
   }
 
   isTokenExpired(): boolean {
@@ -34,12 +35,26 @@ export class LoginService {
     return now > parseInt(expiration) * 1000; // Retorna true si ha expirado
   }
 
-  logout(){
-    sessionStorage.removeItem('expirationTime'); // Elimina el token de sesión
-    localStorage.removeItem('data'); // Elimina el token de localStorage
-    localStorage.removeItem('expirationTime');
-    this.router.navigate(['/']); // Redirige al login
-  }
+   logaut(token: string): any {
+      this.http
+        .post(`${this.baseUrl}Auth/logout`, JSON.stringify(token), {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        })
+        .subscribe((response: any) => {})
+         
+  
+     
+  
+      return null; // Retorna null si no hay un tiempo de expiración válido
+    }
+
+  // logout(){
+  //   sessionStorage.removeItem('expirationTime'); // Elimina el token de sesión
+  //   localStorage.removeItem('data'); // Elimina el token de localStorage
+  //   localStorage.removeItem('expirationTime');
+  //   this.router.navigate(['/']); // Redirige al login
+  // }
 
   checkSession() {
     return this.isTokenExpired();
@@ -47,7 +62,7 @@ export class LoginService {
   }
 
   usuarioLogeado(): boolean {
-    return !!localStorage.getItem('data'); // Retorna true si hay un usuario, false si no
+    return !!localStorage.getItem('token'); // Retorna true si hay un usuario, false si no
   }
 
   

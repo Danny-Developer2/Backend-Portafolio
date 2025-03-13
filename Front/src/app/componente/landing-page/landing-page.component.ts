@@ -51,7 +51,7 @@ export class LandingPageComponent implements OnInit  {
       this.updateDisplayedProjects();
     });
     //TODO Se encarga de validar que el token sea valido si no lo es cierra la session
-    this.loginService.checkSession() && this.loginService.logout();
+    this.loginService.checkSession() && this.loginService.logaut(this.token!);
     // console.log(this.loginService.checkSession());
 
       

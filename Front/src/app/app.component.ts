@@ -6,6 +6,9 @@ import {Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import {jwtDecode} from 'jwt-decode';
 import { FooterComponent } from "./componente/footer/footer.component"; 
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment.development';
+import { LoginService } from './services/login.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -19,40 +22,45 @@ export class AppComponent {
 
   token: string | null = null // Obtiene el token actual
 
-  role: string = '';
+  role: string  | null = null;
+  
+
+  //  baseUrl = `${environment.apiUrl}Auth/read-token-data`;
 
 
-  constructor(private router: Router, private http:HttpClient) { }
+  constructor(private router: Router, private http:HttpClient,private logoutService: LoginService,private toastr:ToastrService) { }
 
 
   getToken(): string {
-    this.token = localStorage.getItem('data') // Retorna el token de sesión o localStorage, según sea el primero disponible
-    if (this.token) {
-      const decodedToken: any = jwtDecode(this.token);
-      this.role = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-  
-      // console.log('Rol del usuario:', this.role);
-    }
-    return this.role;
+    this.role = sessionStorage.getItem('role') 
+    
+    return this.role!;
   }
 
 
   usuarioLogeado(): boolean {
-    return !!localStorage.getItem('data'); // Retorna true si hay un usuario, false si no
+    return !!localStorage.getItem('token'); // Retorna true si hay un usuario, false si no
   }
 
 
 
   logout(){
-    sessionStorage.removeItem('data'); // Elimina el token de sesión
-    localStorage.removeItem('data'); // Elimina el token de localStorage
+    this.token = sessionStorage.getItem('token') || localStorage.getItem('token'); 
+    this.logoutService.logaut(this.token!)
+    sessionStorage.removeItem('role'); // Elimina el token de sesión
+    localStorage.removeItem('token'); // Elimina el token de localStorage
+    sessionStorage.removeItem('expirationTime');
     localStorage.removeItem('expirationTime');
+    this.toastr.success('Sesión finalizada correctamente.', '', {
+      timeOut: 4000,
+      positionClass: 'toast-top-right',
+    });  // Muestra un mensaje de éxito al cerrar la sesión
     this.router.navigate(['/']); // Redirige al login
   }
 
   prueba() {
     // Hacer la solicitud GET a la ruta protegida (Prueba)
-    return this.http.get('http://localhost:7600/api/Auth', { withCredentials: true }).subscribe(data => {
+    return this.http.get('http://localhost:7600/api/Auth/test', { withCredentials: true }).subscribe(data => {
       console.log('Respuesta de la prueba:', data);
     });
   }

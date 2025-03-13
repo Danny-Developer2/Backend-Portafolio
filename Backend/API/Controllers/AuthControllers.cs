@@ -15,6 +15,7 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using API.DTOs;
+using Newtonsoft.Json.Linq;
 
 namespace API.Controllers
 {
@@ -66,7 +67,7 @@ namespace API.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, email),
-                new Claim(ClaimTypes.Role, role),
+                // new Claim(ClaimTypes.Role, role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
@@ -80,20 +81,66 @@ namespace API.Controllers
                 issuer: _issuer,
                 audience: _audience,
                 claims: claims
+
             );
 
             return new JwtSecurityTokenHandler().WriteToken(data);
         }
 
-        // Método para hashear el token (SHA-256)
-        private string ComputeSha256Hash(string rawData)
+        // Método para encryptar el token ()
+
+
+        // Cifrar un texto con AES
+        public static string Encrypt(string plainText, string secretKey)
         {
-            using (SHA256 sha256Hash = SHA256.Create())
+            using (Aes aesAlg = Aes.Create())
             {
-                byte[] bytes = sha256Hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(rawData));
-                return Convert.ToBase64String(bytes);
+                aesAlg.Key = DeriveKey(secretKey, aesAlg.KeySize / 8);
+                aesAlg.IV = DeriveKey(secretKey, aesAlg.BlockSize / 8);
+
+                using (MemoryStream msEncrypt = new MemoryStream())
+                {
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, aesAlg.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                        {
+                            swEncrypt.Write(plainText);
+                        }
+                    }
+
+                    return Convert.ToBase64String(msEncrypt.ToArray()); // Ahora la memoria contiene los datos correctos
+                }
             }
         }
+
+        // Descifrar un texto con AES
+        public static string Decrypt(string cipherText, string secretKey)
+        {
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = DeriveKey(secretKey, aesAlg.KeySize / 8);
+                aesAlg.IV = DeriveKey(secretKey, aesAlg.BlockSize / 8);
+
+                using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(cipherText)))
+                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, aesAlg.CreateDecryptor(), CryptoStreamMode.Read))
+                using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                {
+                    return srDecrypt.ReadToEnd();
+                }
+            }
+        }
+
+        // Genera una clave de tamaño específico basada en la clave secreta
+        private static byte[] DeriveKey(string secretKey, int keySize)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                return sha256.ComputeHash(Encoding.UTF8.GetBytes(secretKey)).AsSpan(0, keySize).ToArray();
+            }
+        }
+
+
+        ///
 
         private async Task StoreSessionFromDtoAsync(ActivateSessionDTO dto, DataContext dbContext)
         {
@@ -114,7 +161,14 @@ namespace API.Controllers
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+            if (user == null)
+            {
+                return Unauthorized(new { message = "Usuario no encontrado." });
+            }
+
+
+
+            if (!BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
             {
                 return Unauthorized(new { message = "Credenciales incorrectas." });
             }
@@ -122,17 +176,29 @@ namespace API.Controllers
 
 
 
+
             // 🔑 Generar y cifrar el token
             var token = GenerateJwtToken(user.Email!, user.Role.ToString());
-            var data = GenerateJwtData(user.Email!, user.Role.ToString());
 
-            var hashedToken = ComputeSha256Hash(token);
+
+
+            var secretKey = _jwtSecretKey;
+
+
+            var encryptedToken = Encrypt(token, secretKey!);
+
+            
+
+
+
+
+            // var hashedToken = ComputeHmacSha256Hash(token, secret);
 
             // Crear la sesión del usuario
             var sessionDto = new ActivateSessionDTO
             {
                 UserId = user.Id,
-                TokenHash = hashedToken,
+                TokenHash = encryptedToken,
                 Expiration = DateTime.UtcNow.AddDays(7) // La sesión dura 7 días
             };
 
@@ -155,8 +221,8 @@ namespace API.Controllers
                 Name = user.Name,
                 Email = user.Email,
                 Role = user.Role,
-                Token = token,
-                Data = data
+                Token = encryptedToken,
+
             };
 
             return Ok(userDTO);
@@ -228,12 +294,12 @@ namespace API.Controllers
 
                 // Validar el token
                 tokenHandler.ValidateToken(tokenDto.Token, validationParameters, out SecurityToken validatedToken);
+                var secretKey = _jwtSecretKey;
 
-                // 2. Si el token está validado correctamente, ahora verificar si está en la base de datos
-                var hashedToken = ComputeSha256Hash(tokenDto.Token);  // Hasheamos el token para comparar con la base de datos
+                var encryptedToken = Encrypt(tokenDto.Token, secretKey!);
 
                 var session = await _context.ActiveSessions
-                    .FirstOrDefaultAsync(s => s.TokenHash == hashedToken);
+                    .FirstOrDefaultAsync(s => s.TokenHash == encryptedToken);
 
                 if (session == null || session.Expiration <= DateTime.UtcNow)
                 {
@@ -284,13 +350,14 @@ namespace API.Controllers
 
         private async Task LogoutAsync(string token, DataContext dbContext)
         {
-            var hashedToken = ComputeSha256Hash(token);
+
+            
 
             // Añadir log para verificar el token hash
-            Console.WriteLine($"Token Hash: {hashedToken}");
+            Console.WriteLine($"Token Hash: {token}");
 
             var session = await dbContext.ActiveSessions
-                .FirstOrDefaultAsync(s => s.TokenHash == hashedToken);
+                .FirstOrDefaultAsync(s => s.TokenHash == token);
 
             if (session != null)
             {
@@ -312,9 +379,38 @@ namespace API.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Test()
         {
-            return Ok("Pruebas Cookies");
+            return Ok(new { message = "Pruebas Cookies" });
         }
-    
+
+        [Authorize]
+        [HttpPost("read-token-data")]
+        public IActionResult ReadDataToken([FromBody] string token)
+        {
+            Console.WriteLine(token);
+            try
+            {
+
+                var secretKey = _jwtSecretKey;
+
+
+                var DencryptedToken = Decrypt(token, secretKey!);
+
+                if (DencryptedToken == null)
+                {
+                    return BadRequest(new { message = "Token inválido" });
+                }
+
+                // var claims = encryptedToken.Claims.ToDictionary(c => c.Type, c => c.Value);
+
+                return Ok(new { message = "Token leído correctamente", DencryptedToken });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error al leer el token", error = ex.Message });
+            }
+        }
+
+
 
     }
 }
